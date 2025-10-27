@@ -5,80 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>현출연습 웹앱 – 키워드 기반 서술형 대비</title>
   <style>
-    :root{--bg:#0b1020;--panel:#111833;--sub:#0f1530;--text:#eef2ff;--muted:#a6b2d9;--accent:#8bffd1;--bad:#ff7a7a;--good:#7dffa1;--warn:#ffd37d}
-    *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#0b1020,#0b0f24 40%,#0a0e1a);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Pretendard,Apple SD Gothic Neo,"Malgun Gothic",sans-serif;}
+    :root{--bg:#0b1020;--panel:#111833;--sub:#0f1530;--text:#eef2ff;--muted:#a6b2d9;--accent:#8bffd1}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#0b1020,#0b0f24 40%,#0a0e1a);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Pretendard,Apple SD Gothic Neo,Malgun Gothic,sans-serif}
     .wrap{max-width:1100px;margin:28px auto;padding:16px}
-    h1{font-size:22px;margin:8px 0 12px;letter-spacing:.2px}
+    h1{font-size:22px;margin:8px 0 12px}
     .grid{display:grid;grid-template-columns:340px 1fr;gap:16px}
-    .card{background:linear-gradient(180deg,#0e1633,#0d142c);border:1px solid #2a335d;border-radius:16px;box-shadow:0 10px 24px rgba(0,0,0,.35);}
+    .card{background:linear-gradient(180deg,#0e1633,#0d142c);border:1px solid #2a335d;border-radius:16px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
     .card .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #232a52}
     .card .bd{padding:14px 16px}
-    .muted{color:var(--muted);font-size:13px}
-    input[type="text"], textarea{width:100%;background:#0c1330;border:1px solid #263069;border-radius:12px;color:var(--text);padding:12px 12px;font-size:14px;outline:none}
-    input[type="text"]:focus, textarea:focus{border-color:#4b5ccf;box-shadow:0 0 0 3px rgba(75,92,207,.25)}
+    input[type=text],textarea{width:100%;background:#0c1330;border:1px solid #263069;border-radius:12px;color:var(--text);padding:12px;font-size:14px;outline:none}
     textarea{min-height:96px;resize:vertical}
-    .row{display:flex;gap:10px}
-    .row > *{flex:1}
-    .btn{appearance:none;border:none;border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px;cursor:pointer}
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .btn-primary{background:linear-gradient(180deg,#3b82f6,#2563eb);color:white;border:1px solid #1f49aa}
+    .row{display:flex;gap:10px}.row>*{flex:1}
+    .btn{border:none;border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px;cursor:pointer}
+    .btn-primary{background:linear-gradient(180deg,#3b82f6,#2563eb);color:#fff;border:1px solid #1f49aa}
     .btn-ghost{background:#0b122e;border:1px solid #293163;color:#dfe7ff}
-    .btn-danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:white;border:1px solid #a61c1c}
-    .tag{display:inline-block;border:1px solid #2b3564;background:#0b122e;color:#e7ecff;border-radius:999px;padding:4px 8px;margin:4px 6px 0 0;font-size:12px}
+    .btn-danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff;border:1px solid #a61c1c}
     .list{max-height:360px;overflow:auto;padding-right:6px}
-    .item{padding:10px;border:1px solid #24305f;background:#0b122e;border-radius:12px;margin:8px 0;display:flex;gap:8px;align-items:center}
-    .item button{margin-left:auto}
-    .small{font-size:12px;color:#c6cff9}
-    .kbd{display:inline-block;border:1px solid #3a4aad;background:#0e1640;color:#dbe4ff;border-radius:6px;padding:1px 6px;font-size:12px}
+    .item{padding:10px;border:1px solid #24305f;background:#0b122e;border-radius:12px;margin:8px 0;display:flex;align-items:center;gap:8px}
+    .tag{display:inline-block;border:1px solid #2b3564;background:#0b122e;color:#e7ecff;border-radius:999px;padding:4px 8px;margin:4px 6px 0 0;font-size:12px}
     .meter{height:12px;background:#0a0f26;border:1px solid #2a335d;border-radius:999px;overflow:hidden}
     .fill{height:100%;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
-    .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;border:1px solid #2a335d;background:#0a0f26}
-    .sep{height:1px;background:#232a52;margin:12px 0}
-    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:12px}
-    a.link{color:#9dc1ff;text-decoration:none}
-    .hint{background:#0b122e;border:1px dashed #2a335d;border-radius:12px;padding:10px}
-    .right{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+    .small{font-size:12px;color:#c6cff9}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>현출연습 웹앱 <span class="muted">– 제목 & 주요 키워드 기반 서술형 대비</span></h1>
+    <h1>현출연습 웹앱 <span class="small">– 제목 & 주요 키워드 기반 서술형 대비</span></h1>
     <div class="grid">
-      <!-- 좌측: 세트 관리 -->
-      <section class="card" id="manage">
+      <!-- 왼쪽: 세트 관리 -->
+      <section class="card">
         <div class="hd">
           <strong>세트 만들기/관리</strong>
-          <div class="right">
+          <div>
             <button class="btn btn-ghost" id="exportBtn">내보내기</button>
             <label class="btn btn-ghost" for="importFile">가져오기</label>
-            $1
-            <label class="pill small"><input type="checkbox" id="mergeImport" checked> 병합 가져오기</label>
+            <input id="importFile" type="file" accept="application/json" style="display:none" />
+            <label class="small"><input type="checkbox" id="mergeImport" checked> 병합 가져오기</label>
           </div>
         </div>
         <div class="bd">
-          <div class="hint small">제목(출제 포인트)과 <b>키워드</b>를 쉼표(,)로 구분해 입력하세요. 예) 공정력, 취소소송, 제소기간, 처분성</div>
+          <input id="title" type="text" placeholder="제목 입력 (예: 행정행위의 공정력)" />
           <div style="height:8px"></div>
-          <input id="title" type="text" placeholder="제목 (예: 행정행위의 공정력과 취소소송의 관계)" />
+          <textarea id="keywords" placeholder="주요 키워드 입력 (쉼표로 구분)"></textarea>
           <div style="height:8px"></div>
-          <textarea id="keywords" placeholder="주요 키워드 (쉼표로 구분)"></textarea>
-          <div style="height:8px"></div>
-          <textarea id="refAnswer" placeholder="선택: 참고 답안 (모범답안이 있으면 붙여넣기)"></textarea>
+          <textarea id="refAnswer" placeholder="참고 답안 (선택)"></textarea>
           <div style="height:10px"></div>
           <div class="row">
             <button class="btn btn-primary" id="saveBtn">추가/저장</button>
             <button class="btn btn-danger" id="clearFormBtn">입력 지우기</button>
           </div>
-          <div class="sep"></div>
+          <div style="height:10px"></div>
           <div class="list" id="list"></div>
         </div>
       </section>
 
-      <!-- 우측: 연습 영역 -->
-      <section class="card" id="practice">
-        <div class="hd">
-          <strong>현출 연습</strong>
-          <div class="right small">단축키: <span class="kbd">Ctrl/⌘+Enter</span> 채점 · <span class="kbd">Alt+N</span> 다음</div>
-        </div>
+      <!-- 오른쪽: 연습 영역 -->
+      <section class="card">
+        <div class="hd"><strong>현출 연습</strong></div>
         <div class="bd">
           <div class="row">
             <select id="deckSelect"></select>
@@ -87,245 +70,140 @@
             <button class="btn btn-ghost" id="nextBtn">다음</button>
           </div>
           <div style="height:10px"></div>
-          <div class="hint">
-            <div><b id="qTitle">연습할 항목을 선택하세요.</b></div>
-            <div class="small muted" id="qInfo"></div>
-          </div>
+          <div><b id="qTitle">연습할 항목을 선택하세요.</b></div>
+          <div class="small" id="qInfo"></div>
           <div style="height:10px"></div>
-          <textarea id="answer" placeholder="여기에 기억나는 키워드 중심으로 서술해 보세요. (핵심어 위주로 짧게 → 문장화)"></textarea>
+          <textarea id="answer" placeholder="기억나는 키워드 중심으로 서술해 보세요."></textarea>
           <div style="height:10px"></div>
-          <div class="row">
-            <button class="btn btn-primary" id="gradeBtn">채점 (Ctrl/⌘+Enter)</button>
-            <button class="btn btn-ghost" id="showRefBtn">참고 답안 보기</button>
-            <label class="pill small"><input type="checkbox" id="strictMode"> 엄격 모드(80% 합격)</label>
-          </div>
+          <button class="btn btn-primary" id="gradeBtn">채점</button>
           <div style="height:10px"></div>
           <div class="meter"><div class="fill" id="meterFill"></div></div>
           <div id="result" class="small" style="margin-top:8px"></div>
           <div id="miss" class="small" style="margin-top:6px"></div>
-          <div id="refWrap" style="display:none;margin-top:10px">
-            <div class="sep"></div>
-            <div class="small muted">참고 답안</div>
-            <pre id="refOut" class="mono" style="white-space:pre-wrap"></pre>
-          </div>
         </div>
       </section>
-    </div>
-
-    <div style="margin:14px 4px" class="small muted">
-      저장은 자동(LocalStorage). 브라우저를 바꿔도 <i>내보내기/가져오기</i>로 옮길 수 있어요.
     </div>
   </div>
 
   <script>
-    // ===== 데이터 저장/불러오기 =====
     const KEY = 'recallDecks.v1';
-    /** @type {Array<{id:string,title:string,keywords:string[],ref?:string}>} */
     let decks = [];
-    let idx = -1; // 현재 연습 중인 항목 인덱스
+    let idx = -1;
 
     function uid(){return Math.random().toString(36).slice(2,9)}
-    function load(){try{decks = JSON.parse(localStorage.getItem(KEY) || '[]')}catch{decks=[]}}
+    function load(){try{decks = JSON.parse(localStorage.getItem(KEY)||'[]')}catch{decks=[]}}
     function save(){localStorage.setItem(KEY, JSON.stringify(decks))}
-
-    // ===== UI 엘리먼트 =====
-    const $title = document.getElementById('title');
-    const $keywords = document.getElementById('keywords');
-    const $refAnswer = document.getElementById('refAnswer');
-    const $list = document.getElementById('list');
-    const $deckSelect = document.getElementById('deckSelect');
-    const $qTitle = document.getElementById('qTitle');
-    const $qInfo = document.getElementById('qInfo');
-    const $answer = document.getElementById('answer');
-    const $result = document.getElementById('result');
-    const $miss = document.getElementById('miss');
-    const $meterFill = document.getElementById('meterFill');
-    const $refWrap = document.getElementById('refWrap');
-    const $refOut = document.getElementById('refOut');
-
-    // ===== 도우미 =====
-    function parseKeywords(text){
-      return text.split(',').map(s=>s.trim()).filter(Boolean).filter((v,i,a)=>a.indexOf(v)===i)
-    }
-    function fmtTags(arr){return arr.map(k=>`<span class="tag">${escapeHtml(k)}</span>`).join('')}
-    function escapeHtml(s){return s.replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
-
-    // ===== 세트 렌더링 =====
+    function parseKeywords(t){return t.split(',').map(s=>s.trim()).filter(Boolean)}
+    function fmtTags(arr){return arr.map(k=>`<span class="tag">${k}</span>`).join('')}
     function renderList(){
-      $list.innerHTML = '';
-      if(decks.length===0){
-        $list.innerHTML = '<div class="muted small">아직 항목이 없습니다. 위에서 제목과 키워드를 입력해 추가하세요.</div>'
-      } else {
-        decks.forEach((d,i)=>{
-          const div = document.createElement('div');
-          div.className='item';
-          div.innerHTML = `
-            <div style="flex:1">
-              <div><b>${escapeHtml(d.title)}</b></div>
-              <div class="small">${fmtTags(d.keywords)}</div>
-            </div>
-            <button class="btn btn-ghost" data-act="edit" data-i="${i}">수정</button>
-            <button class="btn btn-danger" data-act="del" data-i="${i}">삭제</button>
-          `;
-          $list.appendChild(div);
-        })
-      }
+      const list=document.getElementById('list');
+      list.innerHTML='';
+      if(decks.length===0){list.innerHTML='<div class="small">항목이 없습니다.</div>';return;}
+      decks.forEach((d,i)=>{
+        const div=document.createElement('div');
+        div.className='item';
+        div.innerHTML=`<div style="flex:1"><b>${d.title}</b><div>${fmtTags(d.keywords)}</div></div>
+          <button class="btn btn-ghost" data-act="edit" data-i="${i}">수정</button>
+          <button class="btn btn-danger" data-act="del" data-i="${i}">삭제</button>`;
+        list.appendChild(div);
+      });
       renderSelect();
     }
-
     function renderSelect(){
-      $deckSelect.innerHTML = decks.map((d,i)=>`<option value="${i}">${i+1}. ${escapeHtml(d.title)}</option>`).join('');
+      const sel=document.getElementById('deckSelect');
+      sel.innerHTML=decks.map((d,i)=>`<option value="${i}">${i+1}. ${d.title}</option>`).join('');
     }
-
     function loadToForm(i){
-      const d = decks[i]; if(!d) return;
-      $title.value = d.title;
-      $keywords.value = d.keywords.join(', ');
-      $refAnswer.value = d.ref || '';
+      const d=decks[i];if(!d)return;
+      title.value=d.title;keywords.value=d.keywords.join(', ');refAnswer.value=d.ref||'';
     }
 
-    // ===== 이벤트: 추가/저장/삭제/수정 =====
-    document.getElementById('saveBtn').addEventListener('click',()=>{
-      const title = $title.value.trim();
-      const keywords = parseKeywords($keywords.value);
-      const ref = $refAnswer.value.trim();
-      if(!title || keywords.length===0){ alert('제목과 최소 1개의 키워드를 입력하세요.'); return; }
+    document.getElementById('saveBtn').onclick=()=>{
+      const t=title.value.trim();const ks=parseKeywords(keywords.value);const ref=refAnswer.value.trim();
+      if(!t||ks.length===0){alert('제목과 키워드를 입력하세요.');return;}
+      const f=decks.findIndex(d=>d.title===t);
+      if(f>-1){decks[f].keywords=ks;decks[f].ref=ref||undefined;}
+      else{decks.push({id:uid(),title:t,keywords:ks,ref:ref||undefined});}
+      save();renderList();
+      title.value='';keywords.value='';refAnswer.value='';
+    };
+    document.getElementById('clearFormBtn').onclick=()=>{title.value='';keywords.value='';refAnswer.value='';};
+    document.getElementById('list').onclick=e=>{
+      const b=e.target.closest('button');if(!b)return;
+      const i=+b.dataset.i;
+      if(b.dataset.act==='del'){if(confirm('삭제할까요?')){decks.splice(i,1);save();renderList();}}
+      else if(b.dataset.act==='edit'){loadToForm(i);}
+    };
 
-      // 동일 제목이면 업데이트, 아니면 새로 추가
-      const found = decks.findIndex(d=>d.title===title);
-      if(found>-1){
-        decks[found].keywords = keywords; decks[found].ref = ref || undefined;
-      } else {
-        decks.push({id:uid(), title, keywords, ref: ref || undefined});
-      }
-      save(); renderList();
-      $title.value=''; $keywords.value=''; $refAnswer.value='';
-    })
-
-    document.getElementById('clearFormBtn').addEventListener('click',()=>{
-      $title.value=''; $keywords.value=''; $refAnswer.value='';
-    })
-
-    $list.addEventListener('click', (e)=>{
-      const btn = e.target.closest('button'); if(!btn) return;
-      const i = +btn.dataset.i;
-      if(btn.dataset.act==='del'){
-        if(confirm('삭제하시겠어요?')){ decks.splice(i,1); save(); renderList(); }
-      } else if(btn.dataset.act==='edit'){
-        loadToForm(i);
-      }
-    })
-
-    // ===== 연습 제어 =====
     function show(i){
-      if(decks.length===0){ $qTitle.textContent='항목이 없습니다.'; return; }
-      idx = (i+decks.length)%decks.length; // 순환
-      $deckSelect.value = String(idx);
-      const d = decks[idx];
-      $qTitle.textContent = d.title;
-      $qInfo.textContent = `키워드 ${d.keywords.length}개`;
-      $answer.value=''; $result.innerHTML=''; $miss.innerHTML='';
-      $refWrap.style.display='none'; $refOut.textContent='';
-      $meterFill.style.width='0%';
-      $answer.focus();
+      if(decks.length===0)return;
+      idx=(i+decks.length)%decks.length;
+      deckSelect.value=idx;
+      const d=decks[idx];
+      qTitle.textContent=d.title;
+      qInfo.textContent=`키워드 ${d.keywords.length}개`;
+      answer.value='';result.textContent='';miss.textContent='';
+      meterFill.style.width='0%';
     }
-
     function grade(){
-      if(idx<0){ alert('먼저 연습할 항목을 선택하세요.'); return; }
-      const d = decks[idx];
-      const txt = $answer.value.toLowerCase();
-      const hits = []; const miss=[];
+      if(idx<0)return;
+      const d=decks[idx];const txt=answer.value.toLowerCase();
+      const hits=[],missed=[];
       d.keywords.forEach(k=>{
-        const kw = k.toLowerCase();
-        // 단어 경계 우선, 없으면 부분일치 허용
-        const wordHit = new RegExp(`(^|[^가-힣A-Za-z0-9_])${kw}([^가-힣A-Za-z0-9_]|$)`).test(txt);
-        if(wordHit || txt.includes(kw)) hits.push(k); else miss.push(k);
-      })
-      const ratio = (hits.length/d.keywords.length)||0;
-      const strict = document.getElementById('strictMode').checked;
-      const pass = ratio >= (strict?0.8:0.7);
-      $meterFill.style.width = (ratio*100).toFixed(0)+'%';
-      $meterFill.style.background = pass ? 'linear-gradient(90deg,#22c55e,#84cc16)' : 'linear-gradient(90deg,#ef4444,#f97316)';
-      $result.innerHTML = pass
-        ? `✅ <b>정답</b> – 키워드 ${hits.length}/${d.keywords.length}개 포함 (${(ratio*100).toFixed(0)}%)`
-        : `❌ <b>오답</b> – 포함 ${hits.length}/${d.keywords.length}개 (${(ratio*100).toFixed(0)}%)`;
-      $miss.innerHTML = `누락 키워드: ${miss.length?fmtTags(miss):'<span class="small">없음</span>'}`;
+        const kw=k.toLowerCase();
+        if(txt.includes(kw))hits.push(k);else missed.push(k);
+      });
+      const ratio=hits.length/d.keywords.length;
+      meterFill.style.width=(ratio*100)+'%';
+      meterFill.style.background=ratio>=0.7?'linear-gradient(90deg,#22c55e,#84cc16)':'linear-gradient(90deg,#ef4444,#f97316)';
+      result.textContent=`${(ratio*100).toFixed(0)}% 맞춤 (${hits.length}/${d.keywords.length})`;
+      miss.innerHTML=missed.length?'누락: '+fmtTags(missed):'';
     }
 
-    document.getElementById('gradeBtn').addEventListener('click', grade)
-    document.getElementById('nextBtn').addEventListener('click', ()=> show(idx+1))
-    document.getElementById('prevBtn').addEventListener('click', ()=> show(idx-1))
-    document.getElementById('shuffleBtn').addEventListener('click', ()=>{
-      // 피셔-예이츠 셔플
-      for(let i=decks.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [decks[i],decks[j]]=[decks[j],decks[i]] }
-      save(); renderList(); show(0);
-    })
+    gradeBtn.onclick=grade;
+    nextBtn.onclick=()=>show(idx+1);
+    prevBtn.onclick=()=>show(idx-1);
+    shuffleBtn.onclick=()=>{
+      for(let i=decks.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[decks[i],decks[j]]=[decks[j],decks[i]];}
+      save();renderList();show(0);
+    };
+    deckSelect.onchange=e=>show(+e.target.value);
 
-    $deckSelect.addEventListener('change', e=> show(+e.target.value))
-
-    document.getElementById('showRefBtn').addEventListener('click',()=>{
-      if(idx<0) return; const ref = decks[idx].ref; if(!ref){ alert('등록된 참고 답안이 없습니다.'); return; }
-      $refWrap.style.display='block'; $refOut.textContent = ref;
-    })
-
-    // ===== 내보내기/가져오기 =====
-    document.getElementById('exportBtn').addEventListener('click',()=>{
-      const z = n=>String(n).padStart(2,'0');
-      const d = new Date();
-      const name = `recall-decks-${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}-${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}.json`;
-      const blob = new Blob([JSON.stringify(decks,null,2)],{type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href=url; a.download=name; a.click();
-      setTimeout(()=>URL.revokeObjectURL(url),1500)
-    });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href=url; a.download='recall-decks.json'; a.click();
-      setTimeout(()=>URL.revokeObjectURL(url),1500)
-    })
-
-    document.getElementById('importFile').addEventListener('change', (e)=>{
-      const file = e.target.files?.[0]; if(!file) return;
-      const rd = new FileReader();
-      rd.onload = ()=>{
+    document.getElementById('exportBtn').onclick=()=>{
+      const d=new Date(),z=n=>String(n).padStart(2,'0');
+      const name=`recall-decks-${d.getFullYear()}${z(d.getMonth()+1)}${z(d.getDate())}-${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}.json`;
+      const blob=new Blob([JSON.stringify(decks,null,2)],{type:'application/json'});
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');
+      a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);
+    };
+    document.getElementById('importFile').onchange=e=>{
+      const f=e.target.files?.[0];if(!f)return;
+      const rd=new FileReader();
+      rd.onload=()=>{
         try{
-          const data = JSON.parse(String(rd.result));
-          if(!Array.isArray(data)) throw new Error('형식 오류');
-          const incoming = data.map(x=>({id:x.id||uid(), title:String(x.title||''), keywords:(x.keywords||[]).map(String), ref:x.ref?String(x.ref):undefined}))
-          const merge = document.getElementById('mergeImport')?.checked;
+          const data=JSON.parse(rd.result);
+          if(!Array.isArray(data))throw new Error('형식 오류');
+          const incoming=data.map(x=>({id:x.id||uid(),title:String(x.title||''),keywords:(x.keywords||[]).map(String),ref:x.ref?String(x.ref):undefined}));
+          const merge=document.getElementById('mergeImport')?.checked;
           if(merge){
-            const map = new Map(decks.map(d=>[d.title,d]));
+            const map=new Map(decks.map(d=>[d.title,d]));
             for(const nd of incoming){
-              const ex = map.get(nd.title);
+              const ex=map.get(nd.title);
               if(ex){
-                // 키워드 병합(중복 제거)
-                const set = new Set([...(ex.keywords||[]), ...(nd.keywords||[])]);
-                ex.keywords = Array.from(set);
-                // 참고답안은 기존이 없을 때만 채움
-                if(!ex.ref && nd.ref) ex.ref = nd.ref;
-              } else {
-                decks.push(nd);
-              }
+                const set=new Set([...(ex.keywords||[]),...(nd.keywords||[])]);
+                ex.keywords=Array.from(set);
+                if(!ex.ref&&nd.ref)ex.ref=nd.ref;
+              }else decks.push(nd);
             }
-          } else {
-            decks = incoming;
-          }
-          save(); renderList(); show(0);
-        }catch(err){alert('가져오기 실패: '+err.message)}
-      }
-      rd.readAsText(file, 'utf-8');
+          }else decks=incoming;
+          save();renderList();show(0);
+        }catch(err){alert('가져오기 실패: '+err.message);}
+      };
+      rd.readAsText(f,'utf-8');
       e.target.value='';
-    })
+    };
 
-    // ===== 키보드 단축키 =====
-    window.addEventListener('keydown',(ev)=>{
-      if((ev.ctrlKey||ev.metaKey) && ev.key==='Enter'){ grade(); ev.preventDefault(); }
-      if(ev.altKey && (ev.key==='n' || ev.key==='N')){ show(idx+1); ev.preventDefault(); }
-    })
-
-    // 초기화
-    load(); renderList(); if(decks.length) show(0);
+    load();renderList();if(decks.length)show(0);
   </script>
 </body>
 </html>
