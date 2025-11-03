@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>현출연습 웹앱 – Toss-like Clean UI (no auto-advance)</title>
+<title>현출연습 – 과목별 관리(최대 5과목)</title>
 <style>
   :root{
     --bg:#ffffff; --panel:#ffffff; --line:#e5e7eb; --shadow:0 10px 28px rgba(2,6,23,.06);
@@ -13,215 +13,265 @@
     --chip-bg:#f8fafc; --chip-line:#e5e7eb;
     --hint-bg:#f8fafc; --meter-bg:#eef4ff;
   }
-
   *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0; background:var(--bg); color:var(--text);
-    font-family:Pretendard, Apple SD Gothic Neo, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-  }
-
-  .topbar{position:sticky; top:0; z-index:10; backdrop-filter:saturate(180%) blur(8px); background:rgba(255,255,255,.86); border-bottom:1px solid var(--line);}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,Apple SD Gothic Neo,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  .topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.9);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line)}
   .topbar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.2px}
   .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--brand)}
   .brand-title{font-size:18px;color:var(--brand-strong)}
-  .top-actions{display:flex;gap:8px}
 
-  .wrap{max-width:1200px;margin:28px auto;padding:20px}
-  h1{font-size:28px;margin:12px 0 6px;font-weight:800;letter-spacing:-.3px}
-  .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+  .wrap{max-width:1200px;margin:24px auto;padding:0 20px 20px}
+  h1{font-size:28px;margin:10px 0 6px;font-weight:800;letter-spacing:-.3px}
+  .sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+
+  /* 과목 탭바 */
+  .subjects{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 16px}
+  .sub-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--chip-line);background:#fff;font-weight:800;font-size:13px;cursor:pointer}
+  .sub-pill.active{background:var(--brand);color:#fff;border-color:#0057e6;box-shadow:0 6px 16px rgba(0,100,255,.16)}
+  .sub-pill .mini-btn{font-weight:800;border:none;background:transparent;color:inherit;cursor:pointer}
+  .sub-add{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px dashed var(--chip-line);background:#fff;font-weight:800;font-size:13px;color:var(--brand);cursor:pointer}
 
   .grid{display:grid;grid-template-columns:380px 1fr;gap:20px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
   .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line);background:#fbfbfd}
-  .hd strong{font-weight:800;letter-spacing:-.2px}
   .bd{padding:16px 18px}
+  .note{color:var(--muted);font-size:13px}
 
   input,textarea,select{
-    width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;
-    background:#fff;color:var(--text);outline:none;transition:border-color .2s, box-shadow .2s, transform .06s;
+    width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;background:#fff;color:var(--text);
+    outline:none;transition:border-color .2s, box-shadow .2s
   }
   input:focus,textarea:focus,select:focus{border-color:#c7d2fe;box-shadow:0 0 0 4px rgba(0,100,255,.18)}
   textarea{min-height:96px;resize:vertical}
-  .note{color:var(--muted);font-size:13px}
-  .muted{color:var(--muted)}
-  .row{display:flex;gap:12px;align-items:center}
-  .row>*{flex:1}
+  .row{display:flex;gap:12px;align-items:center}.row>*{flex:1}
   .sep{height:1px;background:var(--line);margin:16px 0}
 
+  /* 버튼 */
+  .btn{--btn-bg:#fff;--btn-fg:var(--text);--btn-border:var(--line);
+    position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:12px;
+    border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--btn-fg);font-weight:800;letter-spacing:-.2px;font-size:14px;cursor:pointer;
+    transition:transform .08s, box-shadow .2s, background .2s, border-color .2s;box-shadow:0 1px 0 rgba(2,6,23,.03), 0 8px 16px rgba(2,6,23,.04)
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(2,6,23,.08)}
+  .btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(2,6,23,.06)}
+  .btn-primary{--btn-bg:linear-gradient(180deg,#3b82f6,#0064ff);--btn-fg:#fff;--btn-border:#0057e6;box-shadow:0 8px 18px rgba(0,100,255,.22)}
+  .btn-primary::after{content:"";position:absolute;inset:0;border-radius:12px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));opacity:.75}
+  .btn-danger{--btn-bg:linear-gradient(180deg,#f87171,#ef4444);--btn-fg:#fff;--btn-border:#dc2626;box-shadow:0 8px 18px rgba(239,68,68,.18)}
+  .btn-ghost{--btn-bg:#fff;--btn-border:var(--chip-line)}
+  .btn-chip{--btn-bg:#fff;--btn-border:var(--chip-line);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800}
+
+  /* 리스트 & 태그 */
   .list{max-height:460px;overflow:auto;padding-right:6px}
   .item{display:flex;align-items:center;gap:10px;padding:12px;margin:10px 0;background:#fff;border:1px solid var(--line);border-radius:14px}
   .tag{display:inline-block;border:1px solid var(--chip-line);background:var(--chip-bg);color:var(--text);border-radius:999px;padding:6px 10px;margin:4px 6px 0 0;font-size:12px}
 
+  /* 힌트/게이지/정오답 */
   .hint{background:var(--hint-bg);border:1px dashed var(--line);border-radius:12px;padding:12px;margin-top:8px}
-
   .meter{height:14px;background:var(--meter-bg);border:1px solid var(--line);border-radius:999px;overflow:hidden}
   .fill{height:100%;background:linear-gradient(90deg,#60a5fa,#0064ff);width:0%}
-
-  .btn{
-    --btn-bg:#fff; --btn-fg:var(--text); --btn-border:var(--line);
-    position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    padding:12px 16px;border-radius:12px;border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--btn-fg);
-    font-weight:800;letter-spacing:-.2px;font-size:14px;cursor:pointer;user-select:none;
-    transition:transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, filter .2s ease;
-    box-shadow:0 1px 0 rgba(2,6,23,.03), 0 8px 16px rgba(2,6,23,.04);
-  }
-  .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(2,6,23,.08)}
-  .btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(2,6,23,.06)}
-  .btn:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(0,100,255,.22)}
-  .btn-ghost{--btn-bg:#fff;--btn-border:var(--line)}
-  .btn-ghost:hover{background:#f8fafc}
-  .btn-primary{--btn-bg:linear-gradient(180deg,#3b82f6,#0064ff);--btn-fg:#fff;--btn-border:#0057e6;box-shadow:0 8px 18px rgba(0,100,255,.22)}
-  .btn-primary::after{content:"";position:absolute;inset:0;border-radius:12px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));mix-blend-mode:soft-light;opacity:.75}
-  .btn-danger{--btn-bg:linear-gradient(180deg,#f87171,#ef4444);--btn-fg:#fff;--btn-border:#dc2626;box-shadow:0 8px 18px rgba(239,68,68,.18)}
-  .btn-chip{--btn-bg:#fff;--btn-border:var(--chip-line);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800}
-
   .status{margin-top:10px;border-radius:14px;padding:12px;border:1px solid;display:flex;align-items:center;gap:10px;font-weight:800}
   .ok{background:#eff8ff;border-color:#bfdbfe;color:#0b3ea8}
   .ng{background:#fef2f2;border-color:#fecaca;color:#7f1d1d}
   .warn{background:#fff7ed;border-color:#fed7aa;color:#7c2d12}
 
-  /* 🔴 누락 키워드 강조 스타일 */
+  /* 누락 키워드 강조(붉은 칩) */
   .miss-line{margin-top:6px}
-  .miss-tag{
-    display:inline-block; border:1px solid #fecaca; background:#fef2f2; color:#b91c1c;
-    border-radius:999px; padding:5px 9px; font-size:12px; font-weight:800; margin:3px 6px 0 0;
-  }
+  .miss-tag{display:inline-block;border:1px solid #fecaca;background:#fef2f2;color:#b91c1c;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;margin:3px 6px 0 0}
 </style>
 </head>
 <body>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand"><div class="brand-dot"></div><div class="brand-title">현출연습</div></div>
-      <div class="top-actions">
-        <button class="btn btn-ghost" id="exportBtn">내보내기</button>
-        <label class="btn btn-ghost" for="importFile">가져오기</label>
-        <input id="importFile" type="file" accept="application/json" style="display:none" />
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><div class="brand-dot"></div><div class="brand-title">현출연습</div></div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" id="exportBtn">내보내기</button>
+      <label class="btn btn-ghost" for="importFile">가져오기</label>
+      <input id="importFile" type="file" accept="application/json" style="display:none" />
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>키워드 기반 서술형 대비</h1>
+  <div class="sub">과목별로 세트/통계를 **완전 분리**해 관리하세요. (최대 5과목)</div>
+
+  <!-- 과목 탭 -->
+  <div id="subjectBar" class="subjects"></div>
+
+  <div class="grid">
+    <!-- 왼쪽: 세트 관리 -->
+    <section class="card">
+      <div class="hd">
+        <strong id="leftTitle">세트 만들기</strong>
+        <span class="note">자동 저장(LocalStorage)</span>
       </div>
-    </div>
-  </header>
+      <div class="bd">
+        <div class="note">키워드는 쉼표(, )로 구분. 예: 공정력, 처분성, 제소기간</div>
+        <div style="height:8px"></div>
+        <input id="title" type="text" placeholder="제목 (예: 행정행위의 공정력과 취소소송)" />
+        <div style="height:8px"></div>
+        <textarea id="keywords" placeholder="주요 키워드 (쉼표로 구분)"></textarea>
+        <div style="height:8px"></div>
+        <textarea id="refAnswer" placeholder="참고 답안 (선택)"></textarea>
 
-  <main class="wrap">
-    <h1>키워드 기반 서술형 대비</h1>
-    <div class="sub">토스 느낌의 <b style="color:var(--brand)">깨끗하고 선명한 UI</b>로, 기억-현출 훈련을 빠르게.</div>
-
-    <div class="grid">
-      <!-- 왼쪽 -->
-      <section class="card">
-        <div class="hd">
-          <strong>세트 만들기</strong>
-          <span class="note">자동 저장(LocalStorage)</span>
+        <div style="height:12px"></div>
+        <div class="row">
+          <button class="btn btn-primary" id="saveBtn">추가/저장</button>
+          <button class="btn btn-danger" id="clearFormBtn">입력 지우기</button>
         </div>
-        <div class="bd">
-          <div class="note">키워드는 쉼표(, )로 구분. 예: 공정력, 처분성, 제소기간</div>
-          <div style="height:8px"></div>
-          <input id="title" type="text" placeholder="제목 (예: 행정행위의 공정력과 취소소송)" />
-          <div style="height:8px"></div>
-          <textarea id="keywords" placeholder="주요 키워드 (쉼표로 구분)"></textarea>
-          <div style="height:8px"></div>
-          <textarea id="refAnswer" placeholder="참고 답안 (선택)"></textarea>
 
-          <div style="height:12px"></div>
-          <div class="row">
-            <button class="btn btn-primary" id="saveBtn">추가/저장</button>
-            <button class="btn btn-danger" id="clearFormBtn">입력 지우기</button>
-          </div>
-
-          <div class="sep"></div>
-          <div class="row" style="align-items:center">
-            <strong>세트 목록</strong>
-            <span id="statsSummary" class="note" style="text-align:right"></span>
-          </div>
-          <div id="list" class="list"></div>
+        <div class="sep"></div>
+        <div class="row" style="align-items:center">
+          <strong>세트 목록</strong>
+          <span id="statsSummary" class="note" style="text-align:right"></span>
         </div>
-      </section>
+        <div id="list" class="list"></div>
+      </div>
+    </section>
 
-      <!-- 오른쪽 -->
-      <section class="card">
-        <div class="hd">
-          <strong>현출 연습</strong>
-          <div class="row" style="flex:0 0 auto">
-            <label class="btn btn-chip" style="gap:8px"><input type="checkbox" id="weakOnly"> 반복학습(≤60%)</label>
-            <label class="btn btn-chip" style="gap:8px"><input type="checkbox" id="hintToggle" checked> 힌트 표시</label>
-          </div>
+    <!-- 오른쪽: 연습 화면 -->
+    <section class="card">
+      <div class="hd">
+        <strong>현출 연습</strong>
+        <div class="row" style="flex:0 0 auto">
+          <label class="btn btn-chip" style="gap:8px"><input type="checkbox" id="weakOnly"> 반복학습(≤60%)</label>
+          <label class="btn btn-chip" style="gap:8px"><input type="checkbox" id="hintToggle" checked> 힌트 표시</label>
         </div>
-        <div class="bd">
-          <div class="row">
-            <select id="deckSelect"></select>
-            <button class="btn btn-chip" id="prevBtn">이전</button>
-            <button class="btn btn-chip" id="nextBtn">다음</button>
-          </div>
-
-          <div class="hint">
-            <b id="qTitle">연습할 항목을 선택하세요.</b>
-            <span class="note mini" id="qInfo"></span>
-          </div>
-          <div id="hintBox" class="hint mini" style="display:none"></div>
-
-          <div style="height:8px"></div>
-          <textarea id="answer" placeholder="기억나는 키워드 중심으로 간단히 → 문장화. (Ctrl/⌘+Enter로 채점)"></textarea>
-
-          <div style="height:10px"></div>
-          <div class="row" style="align-items:center">
-            <button class="btn btn-primary" id="gradeBtn">채점</button>
-            <button class="btn btn-ghost" id="showRefBtn" style="flex:0 0 auto">참고 답안</button>
-            <span id="streakBadge" class="note" style="flex:0 0 auto">정답률 —</span>
-          </div>
-
-          <div style="height:12px"></div>
-          <div class="meter"><div id="meterFill" class="fill"></div></div>
-
-          <div id="statusBox" class="status warn" style="display:none">
-            <span id="statusIcon">⚠️</span><span id="statusText">채점 대기 중…</span>
-          </div>
-
-          <div id="miss" class="miss-line"></div>
-
-          <div id="refWrap" style="display:none;margin-top:10px">
-            <div class="note mini">참고 답안(전체)</div>
-            <pre id="refOut" class="note mini" style="white-space:pre-wrap"></pre>
-          </div>
+      </div>
+      <div class="bd">
+        <div class="row">
+          <select id="deckSelect"></select>
+          <button class="btn btn-chip" id="prevBtn">이전</button>
+          <button class="btn btn-chip" id="nextBtn">다음</button>
         </div>
-      </section>
-    </div>
-  </main>
+
+        <div class="hint">
+          <b id="qTitle">연습할 항목을 선택하세요.</b>
+          <span class="note mini" id="qInfo"></span>
+        </div>
+        <div id="hintBox" class="hint mini" style="display:none"></div>
+
+        <div style="height:8px"></div>
+        <textarea id="answer" placeholder="기억나는 키워드 중심으로 간단히 → 문장화. (Ctrl/⌘+Enter로 채점)"></textarea>
+
+        <div style="height:10px"></div>
+        <div class="row" style="align-items:center">
+          <button class="btn btn-primary" id="gradeBtn">채점</button>
+          <button class="btn btn-ghost" id="showRefBtn" style="flex:0 0 auto">참고 답안</button>
+          <span id="streakBadge" class="note" style="flex:0 0 auto">정답률 —</span>
+        </div>
+
+        <div style="height:12px"></div>
+        <div class="meter"><div id="meterFill" class="fill"></div></div>
+
+        <div id="statusBox" class="status warn" style="display:none">
+          <span id="statusIcon">⚠️</span><span id="statusText">채점 대기 중…</span>
+        </div>
+
+        <div id="miss" class="miss-line"></div>
+
+        <div id="refWrap" style="display:none;margin-top:10px">
+          <div class="note mini">참고 답안(전체)</div>
+          <pre id="refOut" class="note mini" style="white-space:pre-wrap"></pre>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
 
 <script>
-/* ========= 상태 ========= */
-var KEY='recallDecks.v1', STATS='recallStats.v1';
-var decks=[], statsMap={}, idx=-1, pool=[], weakMode=false;
+/* ================= 데이터 구조 (과목별) =================
+db = { active: 0, subjects: [
+  { id, name, decks: [{id,title,keywords[],ref?}], stats: { [deckId]: {attempts,lastScore} } }
+]}
+========================================================= */
+var DB_KEY='recallSubjects.v1';
+var LEGACY_KEY='recallDecks.v1'; // v1 마이그레이션
+var db={active:0, subjects:[]};
+var idx=-1; // 현재 문항 인덱스(활성 과목 기준)
+var pool=[]; var weakMode=false;
 
-/* ========= 유틸 ========= */
 function uid(){return Math.random().toString(36).slice(2,9)}
-function z(n){n=String(n);return ('0'+n).slice(-2)}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})}
 function parseKeywords(t){return String(t).split(',').map(function(s){return s.trim();}).filter(function(x){return !!x;});}
+function getS(){ return db.subjects[db.active]; }
+function save(){ localStorage.setItem(DB_KEY, JSON.stringify(db)); }
 
-/* ========= 저장 ========= */
-function load(){ try{decks=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){decks=[]}
-                try{statsMap=JSON.parse(localStorage.getItem(STATS)||'{}')}catch(e){statsMap={}} }
-function save(){ try{localStorage.setItem(KEY, JSON.stringify(decks));}catch(e){} }
-function saveStats(){ try{localStorage.setItem(STATS, JSON.stringify(statsMap));}catch(e){} }
-
-/* ========= 렌더 ========= */
-function renderSelect(){
-  var sel=document.getElementById('deckSelect');
-  sel.innerHTML = decks.map(function(d,i){return '<option value="'+i+'">'+(i+1)+'. '+escapeHtml(d.title)+'</option>'}).join('');
+function migrateIfNeeded(){
+  if(localStorage.getItem(DB_KEY)) return;
+  var legacy = null;
+  try{ legacy = JSON.parse(localStorage.getItem(LEGACY_KEY)||'null'); }catch(e){ legacy=null; }
+  if(legacy && Object.prototype.toString.call(legacy)==='[object Array]'){
+    db.subjects=[{id:uid(), name:'기본', decks: legacy.map(function(x){return {id:(x.id||uid()), title:x.title, keywords:x.keywords||[], ref:x.ref};}), stats:{}}];
+    db.active=0; save();
+  }else{
+    // 초기 과목 1개만 생성
+    db.subjects=[{id:uid(), name:'과목1', decks:[], stats:{}}];
+    db.active=0; save();
+  }
 }
+
+/* ================= 렌더: 과목 바 ================= */
+function renderSubjectBar(){
+  var bar=document.getElementById('subjectBar'); bar.innerHTML='';
+  for(var i=0;i<db.subjects.length;i++){
+    (function(i){
+      var s=db.subjects[i];
+      var b=document.createElement('button');
+      b.className='sub-pill'+(i===db.active?' active':'');
+      b.innerHTML = '<span>'+escapeHtml(s.name)+'</span>'+
+                    (i===db.active? ' <button class="mini-btn" title="이름변경" data-act="rename">✎</button>' +
+                                     ' <button class="mini-btn" title="비어있을 때만 삭제" data-act="del">🗑</button>' : '');
+      b.onclick=function(e){
+        var act=e.target.getAttribute('data-act');
+        if(act==='rename'){
+          var nn=prompt('과목 이름을 입력하세요', s.name);
+          if(nn && nn.trim()){
+            s.name=nn.trim(); save(); renderSubjectBar(); renderAll();
+          }
+          return;
+        }
+        if(act==='del'){
+          if(s.decks.length>0){ alert('세트가 남아 있어 삭제할 수 없습니다. 먼저 세트를 비워주세요.'); return; }
+          if(db.subjects.length<=1){ alert('최소 1개 과목은 필요합니다.'); return; }
+          if(confirm('과목을 삭제할까요?')){ db.subjects.splice(i,1); if(db.active>=db.subjects.length) db.active=db.subjects.length-1; save(); renderSubjectBar(); renderAll(); }
+          return;
+        }
+        db.active=i; save(); renderSubjectBar(); renderAll();
+      };
+      bar.appendChild(b);
+    })(i);
+  }
+  // 과목 추가 버튼
+  var add=document.createElement('button');
+  add.className='sub-add';
+  add.textContent = (db.subjects.length>=5)? '최대 5과목' : '+ 과목 추가';
+  add.disabled = db.subjects.length>=5;
+  add.onclick=function(){
+    if(db.subjects.length>=5){ return; }
+    var nm=prompt('추가할 과목 이름 (예: 헌법 / 행정법 / 민법 / 형법 / 상법)');
+    if(nm && nm.trim()){
+      db.subjects.push({id:uid(), name:nm.trim(), decks:[], stats:{}});
+      db.active=db.subjects.length-1; save(); renderSubjectBar(); renderAll();
+    }
+  };
+  bar.appendChild(add);
+}
+
+/* ================= 렌더: 과목 내부(세트/연습) ================= */
 function renderList(){
-  var list=document.getElementById('list'); list.innerHTML='';
-  if(!decks.length){ list.innerHTML='<div class="note">아직 항목이 없습니다. 위에서 추가하세요.</div>'; renderSelect(); renderSummary(); return; }
-  for(var i=0;i<decks.length;i++){
-    var d=decks[i], st=statsMap[d.id]||{attempts:0,lastScore:0};
-    var rate = st.attempts? Math.round(st.lastScore*100)+'%' : '—';
+  var s=getS(); var list=document.getElementById('list'); list.innerHTML='';
+  if(!s || !s.decks.length){ list.innerHTML='<div class="note">이 과목에는 아직 항목이 없습니다. 위에서 추가하세요.</div>'; renderSelect(); renderSummary(); return; }
+  for(var i=0;i<s.decks.length;i++){
+    var d=s.decks[i], st=s.stats[d.id]||{attempts:0,lastScore:0};
+    var rate=st.attempts? Math.round(st.lastScore*100)+'%' : '—';
     var div=document.createElement('div'); div.className='item';
     div.innerHTML =
       '<div style="flex:1">'+
       '<div style="font-weight:800">'+escapeHtml(d.title)+'</div>'+
-      '<div class="mini muted">최근 정답률: '+rate+' · 시도: '+st.attempts+'회</div>'+
+      '<div class="note" style="font-size:12px">최근 정답률: '+rate+' · 시도: '+st.attempts+'회</div>'+
       '<div style="margin-top:2px">'+d.keywords.map(function(k){return '<span class="tag">'+escapeHtml(k)+'</span>'}).join('')+'</div>'+
       '</div>'+
       '<button class="btn btn-ghost" data-act="edit" data-i="'+i+'">수정</button>'+
@@ -230,21 +280,48 @@ function renderList(){
   }
   renderSelect(); renderSummary();
 }
+function renderSelect(){
+  var s=getS(); var sel=document.getElementById('deckSelect');
+  if(!s){ sel.innerHTML=''; return; }
+  sel.innerHTML = s.decks.map(function(d,i){return '<option value="'+i+'">'+(i+1)+'. '+escapeHtml(d.title)+'</option>'}).join('');
+}
 function renderSummary(){
+  var s=getS(); if(!s){ document.getElementById('statsSummary').textContent=''; return; }
   var weak=0,tried=0,i,st;
-  for(i=0;i<decks.length;i++){ st=statsMap[decks[i].id];
-    if(st && st.attempts>0){ tried++; if(st.lastScore<=0.6) weak++; } }
-  var sum='전체 '+decks.length+'개'; if(tried>0) sum+=' · 60% 이하 '+weak+'개';
+  for(i=0;i<s.decks.length;i++){ st=s.stats[s.decks[i].id]; if(st && st.attempts>0){ tried++; if(st.lastScore<=0.6) weak++; } }
+  var sum='총 '+s.decks.length+'개'; if(tried>0) sum+=' · 60% 이하 '+weak+'개';
   document.getElementById('statsSummary').textContent=sum;
 }
-
-/* ========= 반복학습 풀 ========= */
+function showByIndex(i){
+  var s=getS(); if(!s || !s.decks.length) return;
+  idx=(i+s.decks.length)%s.decks.length;
+  document.getElementById('deckSelect').value=String(idx);
+  var d=s.decks[idx];
+  document.getElementById('qTitle').textContent=d.title;
+  document.getElementById('qInfo').textContent='· 키워드 '+d.keywords.length+'개';
+  document.getElementById('answer').value='';
+  document.getElementById('meterFill').style.width='0%';
+  document.getElementById('statusBox').style.display='none';
+  document.getElementById('miss').innerHTML='';
+  var tox=document.getElementById('hintToggle').checked, hb=document.getElementById('hintBox');
+  if(tox && d.ref){ var t=String(d.ref); hb.style.display='block'; hb.textContent = t.length>180? t.slice(0,180)+'…':t; }
+  else{ hb.style.display='none'; hb.textContent=''; }
+  var st=s.stats[d.id]; document.getElementById('streakBadge').textContent=(st && st.attempts>0)?('최근 정답률 '+Math.round(st.lastScore*100)+'% · 시도 '+st.attempts+'회'):'정답률 —';
+  document.getElementById('refWrap').style.display='none'; document.getElementById('refOut').textContent='';
+}
+function showNext(step){
+  var s=getS(); if(!s || !s.decks.length) return;
+  if(!weakMode || !pool.length){ showByIndex(idx+step); return; }
+  var pIndex=pool.indexOf(idx); if(pIndex<0) pIndex=0;
+  var nextIndex=(pIndex+(step>=0?1:-1)+pool.length)%pool.length;
+  showByIndex(pool[nextIndex]);
+}
 function buildPool(){
-  pool=[];
-  if(!weakMode){ for(var i=0;i<decks.length;i++) pool.push(i); }
+  pool=[]; var s=getS(); if(!s) return;
+  if(!weakMode){ for(var i=0;i<s.decks.length;i++) pool.push(i); }
   else{
-    for(var j=0;j<decks.length;j++){
-      var st=statsMap[decks[j].id];
+    for(var j=0;j<s.decks.length;j++){
+      var st=s.stats[s.decks[j].id];
       if(st && st.attempts>0 && st.lastScore<=0.6) pool.push(j);
     }
     if(pool.length===0){
@@ -256,42 +333,10 @@ function buildPool(){
   }
 }
 
-/* ========= 화면 전환 ========= */
-function showByIndex(i){
-  if(!decks.length) return;
-  idx=(i+decks.length)%decks.length;
-  document.getElementById('deckSelect').value=String(idx);
-  var d=decks[idx];
-  document.getElementById('qTitle').textContent=d.title;
-  document.getElementById('qInfo').textContent='· 키워드 '+d.keywords.length+'개';
-  document.getElementById('answer').value='';
-  document.getElementById('meterFill').style.width='0%';
-  document.getElementById('statusBox').style.display='none';
-  document.getElementById('miss').innerHTML='';
-
-  var tox=document.getElementById('hintToggle').checked;
-  var hb=document.getElementById('hintBox');
-  if(tox && d.ref){ var t=String(d.ref); hb.style.display='block'; hb.textContent = t.length>180? t.slice(0,180)+'…':t; }
-  else{ hb.style.display='none'; hb.textContent=''; }
-
-  var st=statsMap[d.id];
-  document.getElementById('streakBadge').textContent = (st && st.attempts>0) ? ('최근 정답률 '+Math.round(st.lastScore*100)+'% · 시도 '+st.attempts+'회') : '정답률 —';
-
-  document.getElementById('refWrap').style.display='none';
-  document.getElementById('refOut').textContent='';
-}
-function showNext(step){
-  if(!decks.length) return;
-  if(!weakMode || !pool.length){ showByIndex(idx+step); return; }
-  var pIndex=pool.indexOf(idx); if(pIndex<0) pIndex=0;
-  var nextIndex=(pIndex+(step>=0?1:-1)+pool.length)%pool.length;
-  showByIndex(pool[nextIndex]);
-}
-
-/* ========= 채점 (자동 이동 제거, 누락 붉은 칩 강조) ========= */
+/* ================= 채점 (자동이동 없음, 누락 강조) ================= */
 function grade(){
-  if(idx<0) return;
-  var d=decks[idx];
+  var s=getS(); if(!s || idx<0) return;
+  var d=s.decks[idx];
   var txt=String(document.getElementById('answer').value||'').toLowerCase();
   var hits=[], missed=[];
   for(var i=0;i<d.keywords.length;i++){
@@ -299,7 +344,6 @@ function grade(){
     if(txt.indexOf(w)>-1) hits.push(d.keywords[i]); else missed.push(d.keywords[i]);
   }
   var ratio=d.keywords.length? (hits.length/d.keywords.length) : 0;
-
   document.getElementById('meterFill').style.width=Math.round(ratio*100)+'%';
 
   var box=document.getElementById('statusBox'), icon=document.getElementById('statusIcon'), text=document.getElementById('statusText');
@@ -308,76 +352,82 @@ function grade(){
   else{ box.className='status ng'; icon.textContent='❌'; text.textContent='오답 — 0%'; }
   box.style.display='flex';
 
-  /* 🔴 누락 키워드 붉은 칩으로 강조 */
-  var missHtml = missed.length
+  document.getElementById('miss').innerHTML = missed.length
     ? missed.map(function(k){return '<span class="miss-tag">'+escapeHtml(k)+'</span>';}).join('')
-    : '<span class="muted">누락 없음</span>';
-  document.getElementById('miss').innerHTML = missHtml;
+    : '<span class="note">누락 없음</span>';
 
-  // 통계 저장(자동 이동 없음)
-  var st=statsMap[d.id]||{attempts:0,lastScore:0};
-  st.attempts+=1; st.lastScore=ratio; statsMap[d.id]=st; saveStats(); renderSummary();
-
-  // ★ 자동 다음 문항 이동 로직을 제거했습니다.
+  var st=s.stats[d.id]||{attempts:0,lastScore:0};
+  st.attempts+=1; st.lastScore=ratio; s.stats[d.id]=st; save(); renderSummary();
+  if(weakMode){ buildPool(); }
 }
 
-/* ========= 초기화 ========= */
-document.addEventListener('DOMContentLoaded',function(){
-  load(); renderList(); buildPool();
-  if(decks.length) showByIndex(0);
+/* ================= 전체 렌더/초기화 ================= */
+function renderAll(){
+  var s=getS();
+  document.getElementById('leftTitle').textContent = s ? ('세트 만들기 — '+s.name) : '세트 만들기';
+  renderList(); buildPool(); if(s && s.decks.length){ showByIndex(0); } else { idx=-1; }
+}
 
+document.addEventListener('DOMContentLoaded',function(){
+  migrateIfNeeded();
+  try{ db = JSON.parse(localStorage.getItem(DB_KEY) || JSON.stringify(db)); }catch(e){}
+  renderSubjectBar(); renderAll();
+
+  // 세트 저장/수정/삭제
   document.getElementById('saveBtn').onclick=function(){
+    var s=getS(); if(!s) return;
     var t=document.getElementById('title').value.trim();
     var ks=parseKeywords(document.getElementById('keywords').value);
     var r=document.getElementById('refAnswer').value.trim();
     if(!t || !ks.length){ alert('제목과 최소 1개의 키워드를 입력하세요.'); return; }
-    var fi=-1; for(var i=0;i<decks.length;i++){ if(decks[i].title===t){fi=i;break;} }
-    if(fi>-1){ decks[fi].keywords=ks; decks[fi].ref=r||undefined; }
-    else{ decks.push({id:uid(), title:t, keywords:ks, ref:r||undefined}); }
+    var fi=-1; for(var i=0;i<s.decks.length;i++){ if(s.decks[i].title===t){fi=i;break;} }
+    if(fi>-1){ s.decks[fi].keywords=ks; s.decks[fi].ref=r||undefined; }
+    else{ s.decks.push({id:uid(), title:t, keywords:ks, ref:r||undefined}); }
     save(); renderList(); buildPool();
     document.getElementById('title').value=''; document.getElementById('keywords').value=''; document.getElementById('refAnswer').value='';
-    if(decks.length===1) showByIndex(0);
+    if(s.decks.length===1){ showByIndex(0); }
   };
   document.getElementById('clearFormBtn').onclick=function(){
     document.getElementById('title').value=''; document.getElementById('keywords').value=''; document.getElementById('refAnswer').value='';
   };
   document.getElementById('list').onclick=function(e){
     var t=e.target; while(t && t.tagName!=='BUTTON'){ t=t.parentNode; } if(!t) return;
+    var s=getS(); if(!s) return;
     var i=+t.getAttribute('data-i'); var act=t.getAttribute('data-act');
     if(act==='del'){
       if(confirm('삭제할까요?')){
-        var del=decks.splice(i,1)[0];
-        if(del && statsMap[del.id]) delete statsMap[del.id];
-        save(); saveStats(); renderList(); buildPool(); if(decks.length) showByIndex(0);
+        var del=s.decks.splice(i,1)[0];
+        if(del && s.stats[del.id]) delete s.stats[del.id];
+        save(); renderList(); buildPool(); if(s.decks.length) showByIndex(0); else idx=-1;
       }
     }else if(act==='edit'){
-      var d=decks[i]; if(!d) return;
+      var d=s.decks[i]; if(!d) return;
       document.getElementById('title').value=d.title;
       document.getElementById('keywords').value=d.keywords.join(', ');
       document.getElementById('refAnswer').value=d.ref||'';
     }
   };
 
+  // 네비/채점/힌트
   document.getElementById('deckSelect').onchange=function(e){ showByIndex(+e.target.value); };
   document.getElementById('prevBtn').onclick=function(){ showNext(-1); };
   document.getElementById('nextBtn').onclick=function(){ showNext(+1); };
-
   document.getElementById('gradeBtn').onclick=grade;
   document.getElementById('showRefBtn').onclick=function(){
-    if(idx<0) return; var d=decks[idx]; if(!d.ref){ alert('참고 답안이 없습니다.'); return; }
-    document.getElementById('refWrap').style.display='block';
-    document.getElementById('refOut').textContent=d.ref;
+    var s=getS(); if(!s || idx<0) return; var d=s.decks[idx]; if(!d.ref){ alert('참고 답안이 없습니다.'); return; }
+    document.getElementById('refWrap').style.display='block'; document.getElementById('refOut').textContent=d.ref;
   };
   document.getElementById('hintToggle').onchange=function(){
-    if(idx<0) return; var d=decks[idx]; var hb=document.getElementById('hintBox');
+    var s=getS(); if(!s || idx<0) return; var d=s.decks[idx]; var hb=document.getElementById('hintBox');
     if(this.checked && d && d.ref){ var t=String(d.ref); hb.style.display='block'; hb.textContent=t.length>180?t.slice(0,180)+'…':t; }
     else{ hb.style.display='none'; hb.textContent=''; }
   };
-  document.getElementById('weakOnly').onchange=function(){ weakMode=this.checked; buildPool(); if(weakMode && pool.length) showByIndex(pool[0]); };
+  document.getElementById('weakOnly').onchange=function(){ weakMode=this.checked; buildPool(); var s=getS(); if(weakMode && s && pool.length) showByIndex(pool[0]); };
 
+  // 내보내기/가져오기 (전체 과목 구조)
   document.getElementById('exportBtn').onclick=function(){
-    var name='recall-decks-'+(new Date().getTime())+'.json';
-    var blob=new Blob([JSON.stringify(decks,null,2)],{type:'application/json'});
+    var name='recall-subjects-'+(new Date().getTime())+'.json';
+    var blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});
     var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download=name; a.click();
     setTimeout(function(){URL.revokeObjectURL(url);},1200);
   };
@@ -387,14 +437,16 @@ document.addEventListener('DOMContentLoaded',function(){
     rd.onload=function(){
       try{
         var data=JSON.parse(String(rd.result));
-        if(Object.prototype.toString.call(data)!=='[object Array]') throw new Error('형식 오류');
-        decks=data.map(function(x){return {id:(x.id||uid()), title:String(x.title||''), keywords:(x.keywords||[]).map(String), ref:(x.ref?String(x.ref):undefined)};});
-        statsMap={}; save(); saveStats(); renderList(); buildPool(); if(decks.length) showByIndex(0);
+        if(!data || !data.subjects){ throw new Error('형식 오류(과목 구조가 아님)'); }
+        db=data; if(!db.subjects || !db.subjects.length){ db={active:0,subjects:[{id:uid(),name:'과목1',decks:[],stats:{}}]}; }
+        if(db.active<0 || db.active>=db.subjects.length) db.active=0;
+        save(); renderSubjectBar(); renderAll();
       }catch(err){ alert('가져오기 실패: '+err.message); }
     };
     rd.readAsText(f,'utf-8'); e.target.value='';
   };
 
+  // 단축키: Ctrl/Cmd + Enter = 채점
   window.addEventListener('keydown', function(ev){
     var enter=(ev.key==='Enter'||ev.keyCode===13);
     if((ev.ctrlKey||ev.metaKey) && enter){ grade(); ev.preventDefault(); }
