@@ -3,30 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>현출연습 웹앱 – Toss-like Clean UI</title>
+<title>현출연습 웹앱 – Toss-like Clean UI (no auto-advance)</title>
 <style>
   :root{
-    /* ===== Toss-like 라이트 팔레트 ===== */
-    --bg:#ffffff;
-    --panel:#ffffff;
-    --line:#e5e7eb;
-    --shadow:0 10px 28px rgba(2,6,23,.06);
-
-    --text:#0f172a;         /* 본문 */
-    --muted:#64748b;        /* 보조 텍스트 */
-
-    --brand:#0064ff;        /* 포인트 블루 (토스 느낌) */
-    --brand-strong:#004fe0; /* hover/강조 */
-
-    --good:#12b886;         /* 보조 성공 */
-    --bad:#ef4444;
-    --warn:#f59e0b;
-
-    --chip-bg:#f8fafc;
-    --chip-line:#e5e7eb;
-
-    --hint-bg:#f8fafc;
-    --meter-bg:#eef4ff;
+    --bg:#ffffff; --panel:#ffffff; --line:#e5e7eb; --shadow:0 10px 28px rgba(2,6,23,.06);
+    --text:#0f172a; --muted:#64748b;
+    --brand:#0064ff; --brand-strong:#004fe0;
+    --good:#12b886; --bad:#ef4444; --warn:#f59e0b;
+    --chip-bg:#f8fafc; --chip-line:#e5e7eb;
+    --hint-bg:#f8fafc; --meter-bg:#eef4ff;
   }
 
   *{box-sizing:border-box}
@@ -37,11 +22,7 @@
     -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
   }
 
-  /* ===== 상단 헤더 (얇고 깔끔) ===== */
-  .topbar{
-    position:sticky; top:0; z-index:10; backdrop-filter:saturate(180%) blur(8px);
-    background:rgba(255,255,255,.86); border-bottom:1px solid var(--line);
-  }
+  .topbar{position:sticky; top:0; z-index:10; backdrop-filter:saturate(180%) blur(8px); background:rgba(255,255,255,.86); border-bottom:1px solid var(--line);}
   .topbar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 20px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.2px}
   .brand-dot{width:10px;height:10px;border-radius:50%;background:var(--brand)}
@@ -53,106 +34,68 @@
   .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
 
   .grid{display:grid;grid-template-columns:380px 1fr;gap:20px}
-  .card{
-    background:var(--panel);border:1px solid var(--line);
-    border-radius:16px; box-shadow:var(--shadow); overflow:hidden;
-  }
-  .hd{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    padding:16px 18px; border-bottom:1px solid var(--line); background:#fbfbfd;
-  }
-  .hd strong{font-weight:800; letter-spacing:-.2px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+  .hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;border-bottom:1px solid var(--line);background:#fbfbfd}
+  .hd strong{font-weight:800;letter-spacing:-.2px}
   .bd{padding:16px 18px}
 
-  /* ===== 폼 & 타이포 ===== */
   input,textarea,select{
-    width:100%; border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:14px;
-    background:#fff; color:var(--text); outline:none; transition:border-color .2s, box-shadow .2s, transform .06s;
+    width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px;
+    background:#fff;color:var(--text);outline:none;transition:border-color .2s, box-shadow .2s, transform .06s;
   }
-  input:focus,textarea:focus,select:focus{
-    border-color:#c7d2fe; box-shadow:0 0 0 4px rgba(0,100,255,.18);
-  }
-  textarea{min-height:96px; resize:vertical}
-  .note{color:var(--muted); font-size:13px}
+  input:focus,textarea:focus,select:focus{border-color:#c7d2fe;box-shadow:0 0 0 4px rgba(0,100,255,.18)}
+  textarea{min-height:96px;resize:vertical}
+  .note{color:var(--muted);font-size:13px}
   .muted{color:var(--muted)}
-
-  .row{display:flex; gap:12px; align-items:center}
+  .row{display:flex;gap:12px;align-items:center}
   .row>*{flex:1}
-  .sep{height:1px; background:var(--line); margin:16px 0}
+  .sep{height:1px;background:var(--line);margin:16px 0}
 
-  .list{max-height:460px; overflow:auto; padding-right:6px}
-  .item{
-    display:flex; align-items:center; gap:10px;
-    padding:12px; margin:10px 0; background:#fff; border:1px solid var(--line); border-radius:14px;
-  }
-  .tag{display:inline-block; border:1px solid var(--chip-line); background:var(--chip-bg); color:var(--text);
-    border-radius:999px; padding:6px 10px; margin:4px 6px 0 0; font-size:12px}
+  .list{max-height:460px;overflow:auto;padding-right:6px}
+  .item{display:flex;align-items:center;gap:10px;padding:12px;margin:10px 0;background:#fff;border:1px solid var(--line);border-radius:14px}
+  .tag{display:inline-block;border:1px solid var(--chip-line);background:var(--chip-bg);color:var(--text);border-radius:999px;padding:6px 10px;margin:4px 6px 0 0;font-size:12px}
 
-  .hint{
-    background:var(--hint-bg); border:1px dashed var(--line); border-radius:12px; padding:12px; margin-top:8px
-  }
+  .hint{background:var(--hint-bg);border:1px dashed var(--line);border-radius:12px;padding:12px;margin-top:8px}
 
-  .meter{height:14px; background:var(--meter-bg); border:1px solid var(--line); border-radius:999px; overflow:hidden}
-  .fill{height:100%; background:linear-gradient(90deg,#60a5fa,#0064ff); width:0%}
+  .meter{height:14px;background:var(--meter-bg);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .fill{height:100%;background:linear-gradient(90deg,#60a5fa,#0064ff);width:0%}
 
-  /* ===== 버튼: 토스 느낌 (선명한 블루, 둥글고 미세 그라데이션) ===== */
   .btn{
     --btn-bg:#fff; --btn-fg:var(--text); --btn-border:var(--line);
-    position:relative; display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    padding:12px 16px; border-radius:12px; border:1px solid var(--btn-border); background:var(--btn-bg); color:var(--btn-fg);
-    font-weight:800; letter-spacing:-.2px; font-size:14px; cursor:pointer; user-select:none;
+    position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:12px 16px;border-radius:12px;border:1px solid var(--btn-border);background:var(--btn-bg);color:var(--btn-fg);
+    font-weight:800;letter-spacing:-.2px;font-size:14px;cursor:pointer;user-select:none;
     transition:transform .08s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, filter .2s ease;
     box-shadow:0 1px 0 rgba(2,6,23,.03), 0 8px 16px rgba(2,6,23,.04);
   }
-  .btn:hover{transform:translateY(-1px); box-shadow:0 8px 18px rgba(2,6,23,.08)}
-  .btn:active{transform:translateY(0); box-shadow:0 4px 12px rgba(2,6,23,.06)}
-  .btn:focus-visible{outline:none; box-shadow:0 0 0 4px rgba(0,100,255,.22)}
-  .btn-ghost{--btn-bg:#fff; --btn-border:var(--line)}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(2,6,23,.08)}
+  .btn:active{transform:translateY(0);box-shadow:0 4px 12px rgba(2,6,23,.06)}
+  .btn:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(0,100,255,.22)}
+  .btn-ghost{--btn-bg:#fff;--btn-border:var(--line)}
   .btn-ghost:hover{background:#f8fafc}
+  .btn-primary{--btn-bg:linear-gradient(180deg,#3b82f6,#0064ff);--btn-fg:#fff;--btn-border:#0057e6;box-shadow:0 8px 18px rgba(0,100,255,.22)}
+  .btn-primary::after{content:"";position:absolute;inset:0;border-radius:12px;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0));mix-blend-mode:soft-light;opacity:.75}
+  .btn-danger{--btn-bg:linear-gradient(180deg,#f87171,#ef4444);--btn-fg:#fff;--btn-border:#dc2626;box-shadow:0 8px 18px rgba(239,68,68,.18)}
+  .btn-chip{--btn-bg:#fff;--btn-border:var(--chip-line);padding:8px 12px;border-radius:999px;font-size:12px;font-weight:800}
 
-  .btn-primary{
-    --btn-bg:linear-gradient(180deg,#3b82f6,#0064ff);
-    --btn-fg:#fff; --btn-border:#0057e6;
-    box-shadow:0 8px 18px rgba(0,100,255,.22);
-  }
-  .btn-primary::after{
-    content:""; position:absolute; inset:0; border-radius:12px; pointer-events:none;
-    background:linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0)); mix-blend-mode:soft-light; opacity:.75;
-  }
-  .btn-danger{
-    --btn-bg:linear-gradient(180deg,#f87171,#ef4444);
-    --btn-fg:#fff; --btn-border:#dc2626;
-    box-shadow:0 8px 18px rgba(239,68,68,.18);
-  }
+  .status{margin-top:10px;border-radius:14px;padding:12px;border:1px solid;display:flex;align-items:center;gap:10px;font-weight:800}
+  .ok{background:#eff8ff;border-color:#bfdbfe;color:#0b3ea8}
+  .ng{background:#fef2f2;border-color:#fecaca;color:#7f1d1d}
+  .warn{background:#fff7ed;border-color:#fed7aa;color:#7c2d12}
 
-  .btn-chip{
-    --btn-bg:#fff; --btn-border:var(--chip-line);
-    padding:8px 12px; border-radius:999px; font-size:12px; font-weight:800;
+  /* 🔴 누락 키워드 강조 스타일 */
+  .miss-line{margin-top:6px}
+  .miss-tag{
+    display:inline-block; border:1px solid #fecaca; background:#fef2f2; color:#b91c1c;
+    border-radius:999px; padding:5px 9px; font-size:12px; font-weight:800; margin:3px 6px 0 0;
   }
-
-  /* ===== 상태 박스 (정오답 강조) ===== */
-  .status{margin-top:10px; border-radius:14px; padding:12px; border:1px solid; display:flex; align-items:center; gap:10px; font-weight:800}
-  .ok{background:#eff8ff; border-color:#bfdbfe; color:#0b3ea8}     /* 블루 기반의 '정답' */
-  .ng{background:#fef2f2; border-color:#fecaca; color:#7f1d1d}
-  .warn{background:#fff7ed; border-color:#fed7aa; color:#7c2d12}
-
-  /* 작은 뱃지 */
-  .badge{
-    display:inline-flex; align-items:center; gap:6px; border:1px solid var(--chip-line);
-    background:var(--chip-bg); border-radius:999px; padding:6px 10px; font-size:12px; font-weight:700;
-  }
-  .mini{font-size:12px}
 </style>
 </head>
 <body>
 
-  <!-- 상단 바 -->
   <header class="topbar">
     <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-dot"></div>
-        <div class="brand-title">현출연습</div>
-      </div>
+      <div class="brand"><div class="brand-dot"></div><div class="brand-title">현출연습</div></div>
       <div class="top-actions">
         <button class="btn btn-ghost" id="exportBtn">내보내기</button>
         <label class="btn btn-ghost" for="importFile">가져오기</label>
@@ -166,11 +109,11 @@
     <div class="sub">토스 느낌의 <b style="color:var(--brand)">깨끗하고 선명한 UI</b>로, 기억-현출 훈련을 빠르게.</div>
 
     <div class="grid">
-      <!-- 왼쪽: 세트 관리 -->
+      <!-- 왼쪽 -->
       <section class="card">
         <div class="hd">
           <strong>세트 만들기</strong>
-          <span class="badge">자동 저장(LocalStorage)</span>
+          <span class="note">자동 저장(LocalStorage)</span>
         </div>
         <div class="bd">
           <div class="note">키워드는 쉼표(, )로 구분. 예: 공정력, 처분성, 제소기간</div>
@@ -196,7 +139,7 @@
         </div>
       </section>
 
-      <!-- 오른쪽: 연습 화면 -->
+      <!-- 오른쪽 -->
       <section class="card">
         <div class="hd">
           <strong>현출 연습</strong>
@@ -225,7 +168,7 @@
           <div class="row" style="align-items:center">
             <button class="btn btn-primary" id="gradeBtn">채점</button>
             <button class="btn btn-ghost" id="showRefBtn" style="flex:0 0 auto">참고 답안</button>
-            <span id="streakBadge" class="badge" style="flex:0 0 auto">정답률 —</span>
+            <span id="streakBadge" class="note" style="flex:0 0 auto">정답률 —</span>
           </div>
 
           <div style="height:12px"></div>
@@ -235,7 +178,7 @@
             <span id="statusIcon">⚠️</span><span id="statusText">채점 대기 중…</span>
           </div>
 
-          <div id="miss" class="note mini" style="margin-top:6px"></div>
+          <div id="miss" class="miss-line"></div>
 
           <div id="refWrap" style="display:none;margin-top:10px">
             <div class="note mini">참고 답안(전체)</div>
@@ -247,15 +190,9 @@
   </main>
 
 <script>
-/* ========= 데이터/상태 ========= */
-var KEY='recallDecks.v1';
-var STATS='recallStats.v1'; // { [id]: {attempts, lastScore(0~1)} }
-
-var decks=[];          // [{id,title,keywords[],ref?}]
-var statsMap={};       // 진행 통계
-var idx=-1;            // 현재 인덱스
-var pool=[];           // 반복학습(<=60%) 인덱스 묶음
-var weakMode=false;
+/* ========= 상태 ========= */
+var KEY='recallDecks.v1', STATS='recallStats.v1';
+var decks=[], statsMap={}, idx=-1, pool=[], weakMode=false;
 
 /* ========= 유틸 ========= */
 function uid(){return Math.random().toString(36).slice(2,9)}
@@ -263,11 +200,9 @@ function z(n){n=String(n);return ('0'+n).slice(-2)}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})}
 function parseKeywords(t){return String(t).split(',').map(function(s){return s.trim();}).filter(function(x){return !!x;});}
 
-/* ========= 저장/불러오기 ========= */
-function load(){
-  try{decks=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){decks=[]}
-  try{statsMap=JSON.parse(localStorage.getItem(STATS)||'{}')}catch(e){statsMap={}}
-}
+/* ========= 저장 ========= */
+function load(){ try{decks=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){decks=[]}
+                try{statsMap=JSON.parse(localStorage.getItem(STATS)||'{}')}catch(e){statsMap={}} }
 function save(){ try{localStorage.setItem(KEY, JSON.stringify(decks));}catch(e){} }
 function saveStats(){ try{localStorage.setItem(STATS, JSON.stringify(statsMap));}catch(e){} }
 
@@ -297,10 +232,8 @@ function renderList(){
 }
 function renderSummary(){
   var weak=0,tried=0,i,st;
-  for(i=0;i<decks.length;i++){
-    st=statsMap[decks[i].id];
-    if(st && st.attempts>0){ tried++; if(st.lastScore<=0.6) weak++; }
-  }
+  for(i=0;i<decks.length;i++){ st=statsMap[decks[i].id];
+    if(st && st.attempts>0){ tried++; if(st.lastScore<=0.6) weak++; } }
   var sum='전체 '+decks.length+'개'; if(tried>0) sum+=' · 60% 이하 '+weak+'개';
   document.getElementById('statsSummary').textContent=sum;
 }
@@ -335,15 +268,15 @@ function showByIndex(i){
   document.getElementById('meterFill').style.width='0%';
   document.getElementById('statusBox').style.display='none';
   document.getElementById('miss').innerHTML='';
-  // 힌트
+
   var tox=document.getElementById('hintToggle').checked;
   var hb=document.getElementById('hintBox');
   if(tox && d.ref){ var t=String(d.ref); hb.style.display='block'; hb.textContent = t.length>180? t.slice(0,180)+'…':t; }
   else{ hb.style.display='none'; hb.textContent=''; }
-  // 배지
+
   var st=statsMap[d.id];
   document.getElementById('streakBadge').textContent = (st && st.attempts>0) ? ('최근 정답률 '+Math.round(st.lastScore*100)+'% · 시도 '+st.attempts+'회') : '정답률 —';
-  // 참고답안 닫기
+
   document.getElementById('refWrap').style.display='none';
   document.getElementById('refOut').textContent='';
 }
@@ -355,7 +288,7 @@ function showNext(step){
   showByIndex(pool[nextIndex]);
 }
 
-/* ========= 채점 ========= */
+/* ========= 채점 (자동 이동 제거, 누락 붉은 칩 강조) ========= */
 function grade(){
   if(idx<0) return;
   var d=decks[idx];
@@ -375,27 +308,29 @@ function grade(){
   else{ box.className='status ng'; icon.textContent='❌'; text.textContent='오답 — 0%'; }
   box.style.display='flex';
 
-  document.getElementById('miss').innerHTML = missed.length ? ('누락: '+missed.map(escapeHtml).join(', ')) : '<span class="muted">누락 없음</span>';
+  /* 🔴 누락 키워드 붉은 칩으로 강조 */
+  var missHtml = missed.length
+    ? missed.map(function(k){return '<span class="miss-tag">'+escapeHtml(k)+'</span>';}).join('')
+    : '<span class="muted">누락 없음</span>';
+  document.getElementById('miss').innerHTML = missHtml;
 
-  // 통계 갱신
+  // 통계 저장(자동 이동 없음)
   var st=statsMap[d.id]||{attempts:0,lastScore:0};
   st.attempts+=1; st.lastScore=ratio; statsMap[d.id]=st; saveStats(); renderSummary();
-  if(weakMode){ buildPool(); }
-  if(ratio<=0.6){ setTimeout(function(){ showNext(+1); }, 700); }
+
+  // ★ 자동 다음 문항 이동 로직을 제거했습니다.
 }
 
-/* ========= 초기화 & 이벤트 ========= */
+/* ========= 초기화 ========= */
 document.addEventListener('DOMContentLoaded',function(){
   load(); renderList(); buildPool();
   if(decks.length) showByIndex(0);
 
-  // 세트 저장/삭제/수정
   document.getElementById('saveBtn').onclick=function(){
     var t=document.getElementById('title').value.trim();
     var ks=parseKeywords(document.getElementById('keywords').value);
     var r=document.getElementById('refAnswer').value.trim();
     if(!t || !ks.length){ alert('제목과 최소 1개의 키워드를 입력하세요.'); return; }
-    // 제목 중복 시 갱신
     var fi=-1; for(var i=0;i<decks.length;i++){ if(decks[i].title===t){fi=i;break;} }
     if(fi>-1){ decks[fi].keywords=ks; decks[fi].ref=r||undefined; }
     else{ decks.push({id:uid(), title:t, keywords:ks, ref:r||undefined}); }
@@ -423,12 +358,10 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   };
 
-  // 네비
   document.getElementById('deckSelect').onchange=function(e){ showByIndex(+e.target.value); };
   document.getElementById('prevBtn').onclick=function(){ showNext(-1); };
   document.getElementById('nextBtn').onclick=function(){ showNext(+1); };
 
-  // 채점 & 힌트 & 반복학습
   document.getElementById('gradeBtn').onclick=grade;
   document.getElementById('showRefBtn').onclick=function(){
     if(idx<0) return; var d=decks[idx]; if(!d.ref){ alert('참고 답안이 없습니다.'); return; }
@@ -442,7 +375,6 @@ document.addEventListener('DOMContentLoaded',function(){
   };
   document.getElementById('weakOnly').onchange=function(){ weakMode=this.checked; buildPool(); if(weakMode && pool.length) showByIndex(pool[0]); };
 
-  // 내보내기/가져오기
   document.getElementById('exportBtn').onclick=function(){
     var name='recall-decks-'+(new Date().getTime())+'.json';
     var blob=new Blob([JSON.stringify(decks,null,2)],{type:'application/json'});
@@ -456,7 +388,6 @@ document.addEventListener('DOMContentLoaded',function(){
       try{
         var data=JSON.parse(String(rd.result));
         if(Object.prototype.toString.call(data)!=='[object Array]') throw new Error('형식 오류');
-        // 완전 교체(심플) — 필요 시 병합 로직으로 대체 가능
         decks=data.map(function(x){return {id:(x.id||uid()), title:String(x.title||''), keywords:(x.keywords||[]).map(String), ref:(x.ref?String(x.ref):undefined)};});
         statsMap={}; save(); saveStats(); renderList(); buildPool(); if(decks.length) showByIndex(0);
       }catch(err){ alert('가져오기 실패: '+err.message); }
@@ -464,7 +395,6 @@ document.addEventListener('DOMContentLoaded',function(){
     rd.readAsText(f,'utf-8'); e.target.value='';
   };
 
-  // 단축키
   window.addEventListener('keydown', function(ev){
     var enter=(ev.key==='Enter'||ev.keyCode===13);
     if((ev.ctrlKey||ev.metaKey) && enter){ grade(); ev.preventDefault(); }
