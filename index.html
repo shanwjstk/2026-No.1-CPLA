@@ -3,51 +3,103 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>현출연습 웹앱 – 깔끔 UI + 반복학습</title>
+<title>현출연습 웹앱 – 라이트 테마 + 반복학습</title>
 <style>
   :root{
-    --bg:#0b1020;--panel:#0f1530;--line:#263069;
-    --text:#eef2ff;--muted:#a6b2d9;
-    --brand:#82aaff;--good:#22c55e;--bad:#ef4444;--warn:#f59e0b;
+    /* 라이트 팔레트 */
+    --bg:#f7fafc;            /* 배경 */
+    --panel:#ffffff;         /* 카드 배경 */
+    --line:#e2e8f0;          /* 테두리 */
+    --shadow:0 8px 22px rgba(15, 23, 42, .08);
+
+    --text:#0f172a;          /* 본문 글자 */
+    --muted:#64748b;         /* 보조 글자 */
+
+    --brand:#2563eb;         /* 포인트(파랑) */
+    --good:#16a34a;          /* 정답(초록) */
+    --bad:#dc2626;           /* 오답(빨강) */
+    --warn:#d97706;          /* 부분정답(주황) */
+
+    --chip-bg:#f1f5f9;       /* 칩/뱃지 배경 */
+    --chip-line:#e2e8f0;     /* 칩/뱃지 테두리 */
+    --hint-bg:#f8fafc;       /* 힌트 배경 */
+    --meter-bg:#eef2f7;      /* 게이지 바 배경 */
   }
+
   *{box-sizing:border-box}
-  body{margin:0;background:linear-gradient(180deg,#0b1020,#0a0f22 60%,#090d1a);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Pretendard,Apple SD Gothic Neo,Malgun Gothic,sans-serif}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Pretendard,Apple SD Gothic Neo,Malgun Gothic,sans-serif
+  }
   .wrap{max-width:1200px;margin:28px auto;padding:20px}
   h1{font-size:24px;margin:0 0 6px}
   .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+
   .grid{display:grid;grid-template-columns:380px 1fr;gap:16px}
-  .card{background:linear-gradient(180deg,#10173a,#0e1633);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-  .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid #1e2a58}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)
+  }
+  .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
   .bd{padding:14px 16px}
   .muted{color:var(--muted)}
+
   input[type=text],textarea,select{
-    width:100%;background:#0c1330;border:1px solid var(--line);
+    width:100%;background:#ffffff;border:1px solid var(--line);
     border-radius:12px;color:var(--text);padding:11px 12px;font-size:14px;outline:none
   }
   textarea{min-height:96px;resize:vertical}
+  input:focus,textarea:focus,select:focus{box-shadow:0 0 0 3px rgba(37,99,235,.15);border-color:#c7d2fe}
+
   .row{display:flex;gap:10px;align-items:center}
   .row>*{flex:1}
-  .btn{border:none;border-radius:12px;padding:10px 12px;font-weight:700;font-size:14px;cursor:pointer;transition:transform .03s}
+
+  .btn{
+    border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:700;font-size:14px;cursor:pointer;
+    background:#ffffff;color:var(--text);transition:transform .03s, background .15s
+  }
+  .btn:hover{background:#f8fafc}
   .btn:active{transform:translateY(1px)}
-  .btn-primary{background:linear-gradient(180deg,#3b82f6,#2563eb);color:#fff;border:1px solid #1f49aa}
-  .btn-ghost{background:#0b122e;border:1px solid #293163;color:#dfe7ff}
-  .btn-danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff;border:1px solid #a61c1c}
-  .btn-chip{border-radius:999px;padding:6px 10px;font-weight:600;font-size:12px}
+  .btn-primary{
+    background:linear-gradient(180deg,#3b82f6,#2563eb);color:#fff;border-color:#1d4ed8
+  }
+  .btn-primary:hover{filter:brightness(.98)}
+  .btn-danger{
+    background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff;border-color:#b91c1c
+  }
+  .btn-chip{border-radius:999px;padding:6px 10px;font-weight:600;font-size:12px;background:var(--chip-bg)}
+
   .list{max-height:420px;overflow:auto;padding-right:6px}
-  .item{padding:10px;border:1px solid #24305f;background:#0b122e;border-radius:12px;margin:8px 0;display:flex;align-items:center;gap:8px}
-  .tag{display:inline-block;border:1px solid #2b3564;background:#0b122e;color:#e7ecff;border-radius:999px;padding:4px 8px;margin:4px 6px 0 0;font-size:12px}
-  .sep{height:1px;background:#1e2a58;margin:12px 0}
-  .hint{background:#0b122e;border:1px dashed var(--line);border-radius:12px;padding:10px}
-  .meter{height:14px;background:#0a0f26;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .item{
+    padding:10px;border:1px solid var(--line);background:#ffffff;border-radius:12px;margin:8px 0;display:flex;align-items:center;gap:8px
+  }
+  .tag{
+    display:inline-block;border:1px solid var(--chip-line);background:var(--chip-bg);color:#0f172a;border-radius:999px;padding:4px 8px;margin:4px 6px 0 0;font-size:12px
+  }
+
+  .sep{height:1px;background:var(--line);margin:12px 0}
+
+  .hint{
+    background:var(--hint-bg);border:1px dashed var(--line);border-radius:12px;padding:10px
+  }
+
+  .meter{height:14px;background:var(--meter-bg);border:1px solid var(--line);border-radius:999px;overflow:hidden}
   .fill{height:100%;background:linear-gradient(90deg,#22c55e,#84cc16);width:0%}
+
   .status{
     margin-top:10px;border-radius:14px;padding:12px;border:1px solid;display:flex;align-items:center;gap:10px;font-weight:700
   }
-  .ok{background:rgba(34,197,94,.08);border-color:#1a6a34;color:#a7f3d0}
-  .ng{background:rgba(239,68,68,.08);border-color:#7a1b1b;color:#fecaca}
-  .warn{background:rgba(245,158,11,.08);border-color:#7a551b;color:#fde68a}
-  .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;border:1px solid var(--line);background:#0b122e;font-size:12px}
-  .pill{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--line);background:#0b122e;border-radius:999px;padding:6px 10px}
+  .ok{background:#ecfdf5;border-color:#86efac;color:#065f46}       /* 초록 톤 */
+  .ng{background:#fef2f2;border-color:#fecaca;color:#7f1d1d}       /* 빨강 톤 */
+  .warn{background:#fffbeb;border-color:#fde68a;color:#7c2d12}     /* 주황 톤 */
+
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;border:1px solid var(--chip-line);
+    background:var(--chip-bg);font-size:12px
+  }
+  .pill{
+    display:inline-flex;gap:8px;align-items:center;border:1px solid var(--chip-line);
+    background:var(--chip-bg);border-radius:999px;padding:6px 10px
+  }
   .mini{font-size:12px}
   .right{display:flex;gap:8px;align-items:center;justify-content:flex-end}
   .note{font-size:12px;color:var(--muted)}
@@ -56,7 +108,7 @@
 <body>
   <div class="wrap">
     <h1>현출연습 웹앱</h1>
-    <div class="sub">제목 & 주요 키워드 기반 서술형 대비 — <span style="color:#9dc1ff">정오답 강조</span> + <span style="color:#9dc1ff">60% 이하 반복학습</span></div>
+    <div class="sub">제목 & 주요 키워드 기반 서술형 대비 — <b style="color:var(--brand)">정오답 강조</b> + <b style="color:var(--brand)">60% 이하 반복학습</b></div>
 
     <div class="grid">
       <!-- 좌측: 세트 관리 -->
@@ -64,8 +116,8 @@
         <div class="hd">
           <strong>세트 만들기/관리</strong>
           <div class="right">
-            <button class="btn btn-ghost" id="exportBtn">내보내기</button>
-            <label class="btn btn-ghost" for="importFile">가져오기</label>
+            <button class="btn" id="exportBtn">내보내기</button>
+            <label class="btn" for="importFile">가져오기</label>
             <input id="importFile" type="file" accept="application/json" style="display:none" />
             <label class="pill mini"><input type="checkbox" id="mergeImport" checked> 병합 가져오기</label>
           </div>
@@ -105,9 +157,9 @@
         <div class="bd">
           <div class="row">
             <select id="deckSelect"></select>
-            <button class="btn btn-ghost btn-chip" id="shuffleBtn">무작위</button>
-            <button class="btn btn-ghost btn-chip" id="prevBtn">이전</button>
-            <button class="btn btn-ghost btn-chip" id="nextBtn">다음</button>
+            <button class="btn btn-chip" id="shuffleBtn">무작위</button>
+            <button class="btn btn-chip" id="prevBtn">이전</button>
+            <button class="btn btn-chip" id="nextBtn">다음</button>
           </div>
 
           <div style="height:10px"></div>
@@ -123,11 +175,11 @@
           <div style="height:10px"></div>
           <div class="row" style="align-items:center">
             <button class="btn btn-primary" id="gradeBtn">채점</button>
-            <button class="btn btn-ghost" id="showRefBtn" style="flex:0 0 auto">참고 답안 보기</button>
+            <button class="btn" id="showRefBtn" style="flex:0 0 auto">참고 답안 보기</button>
             <span class="badge" id="streakBadge">정답률 —</span>
           </div>
 
-          <div style="height:10px"></div>
+          <div style="height:12px"></div>
           <div class="meter"><div class="fill" id="meterFill"></div></div>
 
           <div id="statusBox" class="status warn" style="display:none">
@@ -151,19 +203,18 @@
 
 <script>
 (function(){
-  // ===== 저장 키 =====
+  /* ===== 저장 키 ===== */
   var KEY='recallDecks.v1';
   var STATS_KEY='recallStats.v1'; // { [id]: {attempts, lastScore(0~1), correctCount} }
 
-  // ===== 상태 =====
+  /* ===== 상태 ===== */
   var decks=[];       // [{id,title,keywords[],ref?}]
   var statsMap={};    // id -> stat
   var idx=-1;         // 현재 인덱스
   var pool=[];        // 현재 연습 대상 인덱스 목록 (전체 or 60% 이하)
   var weakMode=false; // 반복학습 모드(≤60%)
 
-  // ===== 유틸 =====
-  function testStorage(){try{var t='__t'+Date.now();localStorage.setItem(t,'1');localStorage.removeItem(t);return true;}catch(e){return false;}}
+  /* ===== 유틸 ===== */
   function uid(){return Math.random().toString(36).slice(2,9)}
   function z(n){n=String(n);return ('0'+n).slice(-2)}
   function stamp(){var d=new Date();return d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+'-'+z(d.getHours())+z(d.getMinutes())+z(d.getSeconds())}
@@ -172,7 +223,9 @@
   function fmtTags(arr){return arr.map(function(k){return '<span class="tag">'+escapeHtml(k)+'</span>';}).join('')}
   function shuffleInPlace(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=a[i];a[i]=a[j];a[j]=tmp;}}
 
-  // ===== 로드/세이브 =====
+  function testStorage(){try{var t='__t'+Date.now();localStorage.setItem(t,'1');localStorage.removeItem(t);return true;}catch(e){return false;}}
+
+  /* ===== 로드/세이브 ===== */
   function load(){
     try{decks=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){decks=[]}
     try{statsMap=JSON.parse(localStorage.getItem(STATS_KEY)||'{}')}catch(e){statsMap={}}
@@ -180,7 +233,7 @@
   function save(){ try{localStorage.setItem(KEY, JSON.stringify(decks));}catch(e){} }
   function saveStats(){ try{localStorage.setItem(STATS_KEY, JSON.stringify(statsMap));}catch(e){} }
 
-  // ===== 렌더 =====
+  /* ===== 렌더 ===== */
   function renderList(){
     var list=document.getElementById('list'); list.innerHTML='';
     if(decks.length===0){list.innerHTML='<div class="muted mini">아직 항목이 없습니다. 위에서 추가하세요.</div>'; renderSelect(); renderSummary(); return;}
@@ -194,7 +247,7 @@
         '<div class="mini muted">최근 정답률: '+rate+' · 시도: '+st.attempts+'회</div>'+
         '<div>'+fmtTags(d.keywords)+'</div>'+
         '</div>'+
-        '<button class="btn btn-ghost btn-chip" data-act="edit" data-i="'+i+'">수정</button>'+
+        '<button class="btn btn-chip" data-act="edit" data-i="'+i+'">수정</button>'+
         '<button class="btn btn-danger btn-chip" data-act="del" data-i="'+i+'">삭제</button>';
       list.appendChild(div);
     }
@@ -226,11 +279,8 @@
         var st=statsMap[decks[j].id];
         if(st && st.attempts>0 && st.lastScore<=0.6) pool.push(j);
       }
-      // 아직 시도 안 한 문제도 포함하고 싶다면 아래 주석 해제
-      // for(var k=0;k<decks.length;k++){ if(!statsMap[decks[k].id]) pool.push(k); }
       if(pool.length===0){
-        // 예외 처리: 약한 문항이 없을 때 안내
-        document.getElementById('statusBox').style.display='block';
+        document.getElementById('statusBox').style.display='flex';
         document.getElementById('statusBox').className='status ok';
         document.getElementById('statusIcon').textContent='✅';
         document.getElementById('statusText').textContent='반복학습 대상(≤60%)이 없습니다. 전체 모드로 진행해 보세요.';
@@ -250,16 +300,13 @@
     document.getElementById('meterFill').style.width='0%';
     document.getElementById('statusBox').style.display='none';
     document.getElementById('miss').innerHTML='';
-    // 힌트
     var hintOn=document.getElementById('hintToggle').checked;
     var box=document.getElementById('hintBox');
     if(hintOn && d.ref){ var t=String(d.ref); box.style.display='block'; box.textContent = t.length>160?t.slice(0,160)+'…':t; }
     else { box.style.display='none'; box.textContent=''; }
-    // 스트릭 배지
     var st=statsMap[d.id]; var badge=document.getElementById('streakBadge');
     if(st && st.attempts>0){ badge.textContent='최근 정답률 '+Math.round(st.lastScore*100)+'% · 시도 '+st.attempts+'회'; }
     else { badge.textContent='정답률 —'; }
-    // 참고답안 닫기
     document.getElementById('refWrap').style.display='none';
     document.getElementById('refOut').textContent='';
   }
@@ -267,16 +314,15 @@
   function showNext(step){
     if(decks.length===0) return;
     if(!weakMode){ showByIndex(idx+step); return; }
-    // 반복학습 모드: pool을 기준으로 이동
     if(pool.length===0){ showByIndex(idx+step); return; }
-    // 현재 idx가 pool의 어느 위치인지 찾아 다음
     var pIndex = pool.indexOf(idx);
     if(pIndex<0){ pIndex=0; }
     var nextIndex = (pIndex + (step>=0?1:-1) + pool.length) % pool.length;
     showByIndex(pool[nextIndex]);
   }
 
-  // ===== 채점 =====
+  /* ===== 채점 ===== */
+  function fmtPercent(x){ return Math.round(x*100)+'%'; }
   function grade(){
     if(idx<0) return;
     var d=decks[idx];
@@ -284,61 +330,56 @@
     var hits=[], missed=[];
     for(var i=0;i<d.keywords.length;i++){
       var w=String(d.keywords[i]||'').toLowerCase();
-      // 단어 경계 우선 매칭(간단)
       var re=new RegExp('(^|[^가-힣A-Za-z0-9_])'+w+'([^가-힣A-Za-z0-9_]|$)');
       if(re.test(txt) || txt.indexOf(w)>-1) hits.push(d.keywords[i]); else missed.push(d.keywords[i]);
     }
     var ratio = d.keywords.length ? (hits.length/d.keywords.length) : 0;
-    // 게이지
+
     var meter=document.getElementById('meterFill');
-    meter.style.width=Math.round(ratio*100)+'%';
-    // 정오답 박스
+    meter.style.width = fmtPercent(ratio);
+
     var box=document.getElementById('statusBox');
     var icon=document.getElementById('statusIcon');
     var text=document.getElementById('statusText');
-    var pass = ratio>=0.7; // 기본 합격선 70%
+    var pass = ratio>=0.7; // 합격선 70%
+
     if(pass){
       box.className='status ok'; icon.textContent='✅';
-      text.textContent='정답 — '+Math.round(ratio*100)+'% ('+hits.length+'/'+d.keywords.length+')';
+      text.textContent='정답 — '+fmtPercent(ratio)+' ('+hits.length+'/'+d.keywords.length+')';
     }else if(ratio>0){
       box.className='status warn'; icon.textContent='🟡';
-      text.textContent='부분정답 — '+Math.round(ratio*100)+'% ('+hits.length+'/'+d.keywords.length+')';
+      text.textContent='부분정답 — '+fmtPercent(ratio)+' ('+hits.length+'/'+d.keywords.length+')';
     }else{
       box.className='status ng'; icon.textContent='❌';
       text.textContent='오답 — 0% (0/'+d.keywords.length+')';
     }
     box.style.display='flex';
-    // 누락 키워드
+
     document.getElementById('miss').innerHTML = missed.length? ('누락: '+fmtTags(missed)) : '<span class="muted">누락 없음</span>';
-    // 통계 갱신
+
     var st=statsMap[d.id]||{attempts:0,lastScore:0,correctCount:0};
     st.attempts+=1; st.lastScore=ratio; if(pass) st.correctCount+=1;
     statsMap[d.id]=st; saveStats(); renderList();
-    // 반복학습 모드일 땐 pool 갱신
+
     if(weakMode){ buildPool(); }
-    // 60% 이하이면 다음 문제로 이동 제안
-    if(ratio<=0.6){
-      setTimeout(function(){ showNext(+1); }, 600);
-    }
+    if(ratio<=0.6){ setTimeout(function(){ showNext(+1); }, 600); }
   }
 
-  // ===== 이벤트 =====
+  /* ===== 이벤트 ===== */
   document.addEventListener('DOMContentLoaded', function(){
     if(!testStorage()){
-      // 안내만. 앱은 동작하지만 저장이 안될 수 있음
       var warn = document.createElement('div');
-      warn.className='card'; warn.style.margin='0 0 12px'; 
-      warn.innerHTML='<div class="bd mini" style="color:#ffe5e5;background:#3b1d1d;border:1px solid #b94a48;border-radius:14px">⚠️ 브라우저가 저장공간을 제한하고 있을 수 있어요(시크릿 모드/종료시 쿠키삭제 설정). <b>내보내기</b>로 수동 백업 권장.</div>';
+      warn.className='card'; warn.style.margin='0 0 12px';
+      warn.innerHTML='<div class="bd mini" style="color:#7f1d1d;background:#fef2f2;border:1px solid #fecaca;border-radius:14px"><b>주의:</b> 브라우저가 저장공간을 제한하고 있을 수 있어요(시크릿 모드/종료시 쿠키삭제 설정). <b>내보내기</b>로 수동 백업 권장.</div>';
       document.querySelector('.wrap').insertBefore(warn, document.querySelector('.grid'));
     }
 
     load(); renderList();
-    // 초기 풀
     weakMode=document.getElementById('weakOnly').checked;
     buildPool();
     if(decks.length) showByIndex( (weakMode && pool.length)? pool[0]:0 );
 
-    // 세트 조작
+    /* 세트 조작 */
     document.getElementById('saveBtn').onclick=function(){
       var t=document.getElementById('title').value.trim();
       var ks=parseKeywords(document.getElementById('keywords').value);
@@ -361,7 +402,7 @@
       if(act==='edit'){ var d=decks[i]; document.getElementById('title').value=d.title; document.getElementById('keywords').value=d.keywords.join(', '); document.getElementById('refAnswer').value=d.ref||''; }
     };
 
-    // 연습 네비
+    /* 연습 네비 */
     document.getElementById('deckSelect').onchange=function(e){ showByIndex(+e.target.value); };
     document.getElementById('nextBtn').onclick=function(){ showNext(+1); };
     document.getElementById('prevBtn').onclick=function(){ showNext(-1); };
@@ -370,7 +411,7 @@
       else { shuffleInPlace(pool); if(pool.length) showByIndex(pool[0]); }
     };
 
-    // 채점/힌트
+    /* 채점/힌트 */
     document.getElementById('gradeBtn').onclick=grade;
     document.getElementById('hintToggle').onchange=function(){
       if(idx<0) return; var d=decks[idx]; var box=document.getElementById('hintBox');
@@ -383,14 +424,14 @@
       document.getElementById('refOut').textContent = d.ref;
     };
 
-    // 반복학습 토글
+    /* 반복학습 토글 */
     document.getElementById('weakOnly').onchange=function(){
       weakMode=this.checked; buildPool();
       if(weakMode && pool.length){ showByIndex(pool[0]); }
       else if(!weakMode && decks.length){ showByIndex(0); }
     };
 
-    // 내보내기/가져오기
+    /* 내보내기/가져오기 */
     document.getElementById('exportBtn').onclick=function(){
       var name='recall-decks-'+stamp()+'.json';
       var blob=new Blob([JSON.stringify(decks,null,2)],{type:'application/json'});
@@ -410,7 +451,6 @@
             for(i=0;i<incoming.length;i++){
               var nd=incoming[i], ex=map[nd.title];
               if(ex){
-                // 키워드 병합
                 var bag={}, merged=[], a1=(ex.keywords||[]), a2=(nd.keywords||[]);
                 var p; for(p=0;p<a1.length;p++){ if(!bag[a1[p]]){ bag[a1[p]]=1; merged.push(a1[p]); } }
                 for(p=0;p<a2.length;p++){ if(!bag[a2[p]]){ bag[a2[p]]=1; merged.push(a2[p]); } }
@@ -428,7 +468,7 @@
       e.target.value='';
     };
 
-    // 단축키
+    /* 단축키 */
     window.addEventListener('keydown', function(ev){
       var enter = (ev.key==='Enter' || ev.keyCode===13);
       if((ev.ctrlKey||ev.metaKey) && enter){ grade(); ev.preventDefault(); }
